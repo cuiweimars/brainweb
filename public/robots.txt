@@ -3,4 +3,4 @@ User-agent: *
 Disallow:
 
 # Sitemap
-Sitemap: https://brainweb.example.com/sitemap/sitemap.xml
+Sitemap: https://www.brainweb.top/sitemap/sitemap.xml

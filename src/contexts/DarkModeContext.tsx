@@ -28,7 +28,7 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // 保存用户偏好到本地存储
     localStorage.setItem('darkMode', darkMode.toString());
     
-    // 应用暗色模式到文档
+    // 应用暗色/亮色模式到文档
     if (darkMode) {
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');

@@ -865,7 +865,7 @@ const GameDetailPage: React.FC = () => {
           <meta name="twitter:title" content={`${game.title} | BrainWeb`} />
           <meta name="twitter:description" content={game.description} />
           <meta name="twitter:image" content={game.thumbnailUrl} />
-          <link rel="canonical" href={`https://brainweb.example.com/games/${gameId}`} />
+          <link rel="canonical" href={`https://www.brainweb.top/games/${gameId}`} />
         </Helmet>
       )}
       <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900">

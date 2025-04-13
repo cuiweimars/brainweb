@@ -30,10 +30,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Detect dark mode preference early to prevent flash -->
+    <!-- Set initial theme -->
     <script>
-      // Always use dark mode
+      // Default to dark mode
       document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
       localStorage.setItem('theme', 'dark');
     </script>
     <!-- Google tag (gtag.js) -->
