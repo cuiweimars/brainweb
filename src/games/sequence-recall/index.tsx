@@ -1,5 +1,5 @@
 import React from 'react';
 import SequenceRecall from './SequenceRecall';
 
-// 直接导出组件
+// Export the component directly
 export default SequenceRecall; 

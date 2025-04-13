@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import './MathChallenge.css';
 
 // 定义难度级别配置
 const difficultyLevels = {
@@ -50,16 +51,17 @@ const MathChallenge: React.FC<MathChallengeProps> = ({
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(0);
-  const [isGameComplete, setIsGameComplete] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameStatus, setGameStatus] = useState<'idle' | 'playing' | 'paused' | 'gameover'>('idle');
   const [gameLevel, setGameLevel] = useState<'easy' | 'medium' | 'hard'>(difficulty);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [buttonFeedback, setButtonFeedback] = useState<{index: number, type: 'success' | 'error'} | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   // 创建算术问题
   const generateQuestion = useCallback((id: number): Question => {
     const level = difficultyLevels[gameLevel];
     // 随机选择运算符
-   // 随机选择运算符
-let operation = level.operations[Math.floor(Math.random() * level.operations.length)];
+    let operation = level.operations[Math.floor(Math.random() * level.operations.length)];
     
     let num1: number, num2: number, answer: number;
     
@@ -134,20 +136,22 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
     setScore(0);
     setCorrectAnswers(0);
     setTimeRemaining(level.timeLimit);
-    setIsGameComplete(false);
-    setIsGameStarted(false);
+    setGameStatus('idle');
+    setFeedbackMessage('');
+    setButtonFeedback(null);
   }, [gameLevel, generateQuestion]);
 
   // 游戏初始化
   useEffect(() => {
     initializeGame();
+    // 不再自动开始游戏，让用户选择难度并点击开始按钮
   }, [initializeGame, gameLevel]);
 
   // 计时器
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
     
-    if (isGameStarted && !isGameComplete && timeRemaining > 0) {
+    if (gameStatus === 'playing' && timeRemaining > 0) {
       timer = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
@@ -163,13 +167,14 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isGameStarted, isGameComplete, timeRemaining]);
+  }, [gameStatus, timeRemaining]);
 
   // 答题处理
-  const handleAnswer = (selectedAnswer: number) => {
-    if (!isGameStarted) {
-      setIsGameStarted(true);
-    }
+  const handleAnswer = (selectedAnswer: number, optionIndex: number) => {
+    if (gameStatus !== 'playing') return;
+    
+    // 播放按钮音效
+    playSound('button');
     
     // 更新当前问题的用户答案
     const updatedQuestions = [...questions];
@@ -180,26 +185,62 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
     // 检查答案
     const isCorrect = selectedAnswer === currentQuestion.answer;
     
+    // 显示反馈
+    setButtonFeedback({ 
+      index: optionIndex, 
+      type: isCorrect ? 'success' : 'error' 
+    });
+    
     if (isCorrect) {
+      // 播放成功音效
+      playSound('success');
+      
       setScore(prev => prev + 10);
       setCorrectAnswers(prev => prev + 1);
+      setFeedbackMessage(t('correct', 'Correct!'));
+    } else {
+      // 播放错误音效
+      playSound('error');
+      setFeedbackMessage(t('incorrect', 'Incorrect!'));
     }
     
-    // 移动到下一题或结束游戏
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    } else {
-      handleGameComplete();
-    }
+    // 延迟移动到下一题
+    setTimeout(() => {
+      setButtonFeedback(null);
+      
+      // 移动到下一题或结束游戏
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+      } else {
+        handleGameComplete();
+      }
+    }, 1000);
   };
   
   // 游戏完成处理
   const handleGameComplete = () => {
-    setIsGameComplete(true);
+    setGameStatus('gameover');
     
     // 调用完成回调
     if (onGameComplete) {
       onGameComplete(score, correctAnswers, difficultyLevels[gameLevel].timeLimit - timeRemaining);
+    }
+  };
+  
+  // 开始游戏
+  const startGame = () => {
+    setGameStatus('playing');
+    if (timeRemaining === 0) {
+      initializeGame();
+    }
+  };
+  
+  // 暂停游戏
+  const pauseGame = () => {
+    if (gameStatus === 'playing') {
+      setGameStatus('paused');
+    } else if (gameStatus === 'paused') {
+      setGameStatus('playing');
     }
   };
   
@@ -209,6 +250,70 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+  
+  // 计算时间进度百分比
+  const timePercentage = (timeRemaining / difficultyLevels[gameLevel].timeLimit) * 100;
+
+  // 简单的音效功能
+  const playSound = (type: string) => {
+    if (!soundEnabled) return;
+    
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      gainNode.gain.value = 0.1;
+      
+      switch(type) {
+        case 'button':
+          oscillator.type = 'sine';
+          oscillator.frequency.value = 440;
+          oscillator.start();
+          setTimeout(() => {
+            oscillator.stop();
+            audioContext.close();
+          }, 150);
+          break;
+        case 'success':
+          oscillator.type = 'sine';
+          oscillator.frequency.value = 600;
+          oscillator.start();
+          setTimeout(() => {
+            oscillator.frequency.value = 800;
+            setTimeout(() => {
+              oscillator.stop();
+              audioContext.close();
+            }, 200);
+          }, 200);
+          break;
+        case 'error':
+          oscillator.type = 'sine';
+          oscillator.frequency.value = 250;
+          oscillator.start();
+          setTimeout(() => {
+            oscillator.frequency.value = 200;
+            setTimeout(() => {
+              oscillator.stop();
+              audioContext.close();
+            }, 300);
+          }, 200);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+  
+  // 切换声音设置
+  const toggleSound = () => {
+    setSoundEnabled(!soundEnabled);
+  };
 
   // 当前问题
   const currentQuestion = questions[currentQuestionIndex];
@@ -216,17 +321,12 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
   // 如果游戏刚加载且问题还没准备好
   if (questions.length === 0) {
     return (
-      <div className="text-center p-4">
-        <h3 className="text-white text-lg font-bold mb-2">{t('math_challenge')}</h3>
-        <p className="text-gray-300 mb-4">{t('loading')}</p>
-        <div className="mb-6 flex justify-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent" />
-        </div>
+      <div className="math-challenge-loading">
+        <h3>{t('math_challenge')}</h3>
+        <p>{t('loading')}</p>
+        <div className="loading-spinner"></div>
         {onExit && (
-          <button 
-            onClick={onExit}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-          >
+          <button onClick={onExit} className="exit-button">
             {t('exit_game')}
           </button>
         )}
@@ -235,180 +335,175 @@ let operation = level.operations[Math.floor(Math.random() * level.operations.len
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-2xl mx-auto p-4">
-      {/* 游戏控制栏 */}
-      <div className="w-full flex justify-between items-center mb-4">
-        <div className="flex space-x-4">
-          <div className="bg-blue-100 dark:bg-blue-900 py-1 px-3 rounded-md">
-            <span className="font-medium text-blue-800 dark:text-blue-200">
-              {t('time')}: {formatTime(timeRemaining)}
-            </span>
+    <div className="math-challenge-container">
+      {/* 顶部状态栏 - 中间 */}
+      <div className="stats-container">
+        <div className="stats-content">
+          <div className="stat-item">
+            <div className="stat-label">{t('score')}</div>
+            <div className="stat-value">{score}</div>
           </div>
-          <div className="bg-green-100 dark:bg-green-900 py-1 px-3 rounded-md">
-            <span className="font-medium text-green-800 dark:text-green-200">
-              {t('score')}: {score}
-            </span>
+          <div className="stat-divider"></div>
+          <div className="stat-item">
+            <div className="stat-label">{t('time')}</div>
+            <div className="stat-value">{formatTime(timeRemaining)}</div>
           </div>
-          <div className="bg-purple-100 dark:bg-purple-900 py-1 px-3 rounded-md">
-            <span className="font-medium text-purple-800 dark:text-purple-200">
-              {t('question')}: {currentQuestionIndex + 1}/{questions.length}
-            </span>
+          <div className="stat-divider"></div>
+          <div className="stat-item">
+            <div className="stat-label">{t('question')}</div>
+            <div className="stat-value">{currentQuestionIndex + 1}/{questions.length}</div>
           </div>
-        </div>
-        
-        <div className="flex space-x-2">
-          <button
-            onClick={initializeGame}
-            className="bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded-md text-sm transition-colors"
-          >
-            {t('restart')}
-          </button>
-          {onExit && (
-            <button
-              onClick={onExit}
-              className="bg-gray-600 hover:bg-gray-700 text-white py-1 px-3 rounded-md text-sm transition-colors"
-            >
-              {t('exit_game')}
-            </button>
-          )}
+          <div className="stat-divider"></div>
+          <div className="stat-item">
+            <div className="stat-label">{t('correct')}</div>
+            <div className="stat-value">{correctAnswers}</div>
+          </div>
         </div>
       </div>
       
-      {/* 难度选择器 */}
-      <div className="mb-4 flex space-x-2">
+      {/* 难度选择 - 左上角 */}
+      <div className="difficulty-container">
         <button
           onClick={() => setGameLevel('easy')}
-          className={`px-3 py-1 rounded-md text-sm ${
-            gameLevel === 'easy'
-              ? 'bg-green-600 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-          }`}
+          className={`difficulty-button ${gameLevel === 'easy' ? 'difficulty-active easy' : ''}`}
         >
           {t('easy')}
         </button>
         <button
           onClick={() => setGameLevel('medium')}
-          className={`px-3 py-1 rounded-md text-sm ${
-            gameLevel === 'medium'
-              ? 'bg-yellow-600 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-          }`}
+          className={`difficulty-button ${gameLevel === 'medium' ? 'difficulty-active medium' : ''}`}
         >
           {t('medium')}
         </button>
         <button
           onClick={() => setGameLevel('hard')}
-          className={`px-3 py-1 rounded-md text-sm ${
-            gameLevel === 'hard'
-              ? 'bg-red-600 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-          }`}
+          className={`difficulty-button ${gameLevel === 'hard' ? 'difficulty-active hard' : ''}`}
         >
           {t('hard')}
         </button>
       </div>
       
-      {/* 游戏开始状态 */}
-      {!isGameStarted ? (
-        <div className="mt-8 text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('math_challenge')}
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-6">
-            {t('math_challenge_description')}
-          </p>
-          <div className="mb-4 text-sm text-gray-700 dark:text-gray-300">
-            <p className="font-semibold mb-2">{t('difficulty')}: {t(gameLevel)}</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>{t('questions')}: {difficultyLevels[gameLevel].questionsCount}</li>
-              <li>{t('time_limit')}: {formatTime(difficultyLevels[gameLevel].timeLimit)}</li>
-              <li>{t('operations')}: {difficultyLevels[gameLevel].operations.join(', ')}</li>
-              <li>{t('max_number')}: {difficultyLevels[gameLevel].maxNumber}</li>
-            </ul>
-          </div>
-          <button
-            onClick={() => setIsGameStarted(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg shadow transition-colors"
-          >
-            {t('start_game')}
-          </button>
-        </div>
-      ) : (
-        /* 问题区域 */
-        <div className="w-full">
-          {!isGameComplete && currentQuestion && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 w-full">
-              <div className="mb-6 text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {currentQuestion.text}
-                </h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {currentQuestion.options.map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleAnswer(option)}
-                    className="py-3 px-4 bg-purple-100 hover:bg-purple-200 dark:bg-purple-900 dark:hover:bg-purple-800 rounded-lg text-xl font-semibold text-purple-800 dark:text-purple-200 transition-colors"
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
+      {/* 声音控制 - 右上角 */}
+      <div className="sound-control">
+        <button
+          onClick={() => setSoundEnabled(!soundEnabled)}
+          className="sound-button"
+        >
+          {soundEnabled ? (
+            <span className="sound-icon">🔊</span>
+          ) : (
+            <span className="sound-icon">🔇</span>
           )}
-        </div>
-      )}
+        </button>
+      </div>
       
-      {/* 游戏完成覆盖 */}
-      {isGameComplete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full text-center">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('game_complete')}!
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              {t('math_challenge_complete_message')}
-            </p>
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-green-100 dark:bg-green-900 py-2 px-3 rounded-md">
-                <div className="text-xs text-green-800 dark:text-green-200">
-                  {t('score')}
-                </div>
-                <div className="font-bold text-green-800 dark:text-green-200">
-                  {score}
-                </div>
+      {/* 暂停按钮 - 右上角声音按钮旁边 */}
+      <div className="pause-control">
+        <button 
+          onClick={pauseGame}
+          className="pause-button"
+          disabled={gameStatus !== 'playing' && gameStatus !== 'paused'}
+        >
+          {gameStatus === 'paused' ? (
+            <span className="pause-icon">▶</span>
+          ) : (
+            <span className="pause-icon">⏸</span>
+          )}
+        </button>
+      </div>
+      
+      {/* 游戏区域 - 中央 */}
+      <div className="game-area">
+        {feedbackMessage && (
+          <div className="feedback-message">{feedbackMessage}</div>
+        )}
+        
+        {/* 游戏开始状态 */}
+        {gameStatus === 'idle' ? (
+          null
+        ) : gameStatus === 'playing' ? (
+          <div className="question-panel">
+            <div className="question-text">{currentQuestion.text}</div>
+            <div className="options-grid">
+              {currentQuestion.options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAnswer(option, index)}
+                  className={`option-button ${buttonFeedback?.index === index ? buttonFeedback.type : ''}`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : gameStatus === 'paused' ? (
+          <div className="pause-panel">
+            <h2>{t('game_paused')}</h2>
+            <p>{t('resume_to_continue')}</p>
+            <button onClick={pauseGame} className="resume-button">
+              {t('resume')}
+            </button>
+          </div>
+        ) : null}
+        
+        {/* 时间进度条 */}
+        {gameStatus === 'playing' && (
+          <div className="timer-bar">
+            <div 
+              className={`timer-progress ${timeRemaining < 10 ? 'timer-critical' : ''}`}
+              style={{ width: `${timePercentage}%` }}
+            ></div>
+          </div>
+        )}
+      </div>
+      
+      {/* 底部按钮 - 中央 */}
+      <div className="control-buttons">
+        <button onClick={() => {
+          if (gameStatus === 'gameover') {
+            initializeGame();
+          }
+          startGame();
+        }} className="start-button">
+          {t('start_game')}
+        </button>
+        {onExit && (
+          <button onClick={onExit} className="exit-button">
+            {t('exit')}
+          </button>
+        )}
+      </div>
+      
+      {/* 游戏结束弹窗 */}
+      {gameStatus === 'gameover' && (
+        <div className="game-over-overlay">
+          <div className="game-over-content">
+            <h2>{t('game_complete')}!</h2>
+            <p>{t('math_challenge_complete_message')}</p>
+            <div className="results-grid">
+              <div className="result-item">
+                <div className="result-label">{t('score')}</div>
+                <div className="result-value">{score}</div>
               </div>
-              <div className="bg-blue-100 dark:bg-blue-900 py-2 px-3 rounded-md">
-                <div className="text-xs text-blue-800 dark:text-blue-200">
-                  {t('correct_answers')}
-                </div>
-                <div className="font-bold text-blue-800 dark:text-blue-200">
-                  {correctAnswers}/{questions.length}
-                </div>
+              <div className="result-item">
+                <div className="result-label">{t('correct_answers')}</div>
+                <div className="result-value">{correctAnswers}/{questions.length}</div>
               </div>
-              <div className="bg-purple-100 dark:bg-purple-900 py-2 px-3 rounded-md">
-                <div className="text-xs text-purple-800 dark:text-purple-200">
-                  {t('time_used')}
-                </div>
-                <div className="font-bold text-purple-800 dark:text-purple-200">
-                  {formatTime(difficultyLevels[gameLevel].timeLimit - timeRemaining)}
-                </div>
+              <div className="result-item">
+                <div className="result-label">{t('time_used')}</div>
+                <div className="result-value">{formatTime(difficultyLevels[gameLevel].timeLimit - timeRemaining)}</div>
               </div>
             </div>
             
-            <div className="flex space-x-2 justify-center">
-              <button
-                onClick={initializeGame}
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
-              >
+            <div className="game-over-buttons">
+              <button onClick={() => {
+                initializeGame();
+                startGame();
+              }} className="play-again-button">
                 {t('play_again')}
               </button>
               {onExit && (
-                <button
-                  onClick={onExit}
-                  className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition-colors"
-                >
+                <button onClick={onExit} className="exit-button">
                   {t('exit')}
                 </button>
               )}

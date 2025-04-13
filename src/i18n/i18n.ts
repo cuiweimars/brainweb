@@ -54,4 +54,4 @@ i18n
   });
 
 export default i18n;
-export {}; // 使TypeScript将此文件视为模块 
+export {}; // Make TypeScript treat this file as a module 

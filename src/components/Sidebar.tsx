@@ -181,7 +181,7 @@ const Sidebar: React.FC = () => {
               >
                 <span className="mr-3">{category.icon}</span>
                 <span>{t(category.name)}</span>
-                <span className="ml-auto bg-gray-700 text-xs rounded px-1">{category.count}</span>
+                <span className="ml-auto bg-purple-700 text-white text-xs font-semibold rounded-full px-2 py-0.5 min-w-[1.5rem] text-center">{category.count}</span>
               </Link>
             ))}
           </div>

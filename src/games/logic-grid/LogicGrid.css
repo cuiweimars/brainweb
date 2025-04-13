@@ -1,0 +1,608 @@
+.logic-grid-game {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+
+/* Instructions Styling */
+.logic-grid-gameplay-enhanced-instructions {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.logic-grid-gameplay-instruction-title {
+  color: #4f46e5;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.logic-grid-gameplay-instruction-list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.logic-grid-gameplay-instruction-item {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.logic-grid-gameplay-instruction-highlight {
+  background-color: #eef2ff;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #4f46e5;
+  margin: 0 2px;
+}
+
+.logic-grid-gameplay-instruction-sublist {
+  margin: 8px 0 8px 15px;
+  padding-left: 20px;
+}
+
+.logic-grid-gameplay-instruction-subitem {
+  margin: 5px 0;
+}
+
+.logic-grid-gameplay-instruction-step-title {
+  font-weight: 600;
+  color: #4338ca;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* Game State Styling */
+.logic-grid-intro,
+.logic-grid-game-over {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.logic-grid-intro-title,
+.logic-grid-game-over-title {
+  font-size: 2.5rem;
+  color: #4f46e5;
+  margin-bottom: 20px;
+}
+
+.logic-grid-intro-image,
+.logic-grid-game-over-image {
+  margin: 20px auto;
+  max-width: 200px;
+}
+
+.logic-grid-intro-text,
+.logic-grid-game-over-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.logic-grid-difficulty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.logic-grid-difficulty-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logic-grid-difficulty-button:hover {
+  background-color: #e5e7eb;
+}
+
+.logic-grid-difficulty-button.selected {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.logic-grid-button {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logic-grid-button-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.logic-grid-button-primary:hover {
+  background-color: #4338ca;
+}
+
+.logic-grid-button-secondary {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.logic-grid-button-secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.logic-grid-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Game Play Styling */
+.logic-grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logic-grid-title {
+  font-size: 1.5rem;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.logic-grid-info {
+  display: flex;
+  gap: 20px;
+}
+
+.logic-grid-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logic-grid-stat-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.logic-grid-stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.logic-grid-content {
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.logic-grid-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.logic-grid-hint-panel {
+  background-color: #eef2ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.logic-grid-hint-title {
+  font-weight: 600;
+  color: #4f46e5;
+  margin-bottom: 5px;
+}
+
+.logic-grid-hint-text {
+  color: #4b5563;
+}
+
+.logic-grid-puzzle-area {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+.logic-grid-clues {
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.logic-grid-clue {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f3f4f6;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.logic-grid-clue.solved {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.logic-grid-grid-container {
+  overflow-x: auto;
+}
+
+.logic-grid-grid {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.logic-grid-grid th,
+.logic-grid-grid td {
+  border: 1px solid #d1d5db;
+  padding: 8px;
+  text-align: center;
+}
+
+.logic-grid-grid th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.logic-grid-grid-corner {
+  background-color: #e5e7eb !important;
+}
+
+.logic-grid-grid-label {
+  background-color: #eef2ff !important;
+  color: #4f46e5;
+}
+
+.logic-grid-cell {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.logic-grid-cell.true {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.logic-grid-cell.false {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.logic-grid-cell.maybe {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.logic-grid-cell:hover {
+  background-color: #f3f4f6;
+}
+
+/* Modal Styling */
+.logic-grid-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.logic-grid-modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.logic-grid-modal-title {
+  font-size: 1.8rem;
+  color: #4f46e5;
+  margin-bottom: 15px;
+}
+
+.logic-grid-modal-text {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #4b5563;
+}
+
+.logic-grid-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Game Over Styling */
+.logic-grid-game-over-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.logic-grid-game-over-stat {
+  background-color: #f3f4f6;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logic-grid-game-over-stat-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.logic-grid-game-over-stat-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .logic-grid-puzzle-area {
+    grid-template-columns: 1fr;
+  }
+  
+  .logic-grid-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .logic-grid-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .logic-grid-difficulty-selector {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .logic-grid-difficulty-button {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .logic-grid-help-info {
+    max-width: 300px;
+  }
+}
+
+/* Grid Styling Improvements */
+.logic-grid-grid-header {
+  position: relative;
+  padding-bottom: 30px !important;
+}
+
+.logic-grid-grid-label {
+  position: relative;
+  padding-right: 30px !important;
+}
+
+.logic-grid-mark-column-button,
+.logic-grid-mark-row-button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #ef4444;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.logic-grid-mark-column-button:hover,
+.logic-grid-mark-row-button:hover {
+  background-color: #fee2e2;
+  opacity: 1;
+}
+
+.logic-grid-mark-column-button {
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logic-grid-mark-row-button {
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.logic-grid-cell-container {
+  padding: 0 !important;
+  transition: all 0.2s;
+}
+
+.logic-grid-cell-container:hover {
+  background-color: #f9fafb;
+}
+
+.logic-grid-cell-container.cell-true {
+  background-color: #d1fae5;
+}
+
+.logic-grid-cell-container.cell-false {
+  background-color: #fee2e2;
+}
+
+.logic-grid-cell-container.cell-maybe {
+  background-color: #fef3c7;
+}
+
+.logic-grid-cell {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+}
+
+/* Layout Improvements */
+.logic-grid-gameplay {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.logic-grid-left-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logic-grid-difficulty-info {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-left: 10px;
+}
+
+.logic-grid-help-info {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  max-width: 500px;
+}
+
+.logic-grid-help-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.logic-grid-difficulty-value {
+  font-weight: 600;
+  color: #4f46e5;
+  margin-left: 5px;
+}
+
+/* Improved Clue Display */
+.logic-grid-clue {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.logic-grid-clue:before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+}
+
+.logic-grid-clue.solved:before {
+  background-color: #10b981;
+}
+
+/* Improve Responsive Behavior */
+@media (max-width: 550px) {
+  .logic-grid-puzzle-area {
+    grid-template-columns: 1fr;
+  }
+  
+  .logic-grid-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  
+  .logic-grid-mark-column-button,
+  .logic-grid-mark-row-button {
+    width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
+  }
+  
+  .logic-grid-grid-header {
+    padding-bottom: 25px !important;
+  }
+  
+  .logic-grid-grid-label {
+    padding-right: 25px !important;
+  }
+  
+  .logic-grid-controls {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .logic-grid-left-controls {
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .logic-grid-help-info {
+    margin-left: 0;
+    margin-top: 8px;
+    max-width: 100%;
+  }
+  
+  .logic-grid-help-text {
+    font-size: 0.8rem;
+  }
+} 

@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import confetti from 'canvas-confetti';
 import './SequenceRecall.css';
 
-// 按钮颜色
+// Button colors
 const BUTTON_COLORS = ['red', 'green', 'blue', 'yellow'];
 
-// 难度设置
+// Difficulty settings
 const DIFFICULTY_SETTINGS = {
   easy: {
     initialSequenceLength: 2,
@@ -29,11 +29,11 @@ const DIFFICULTY_SETTINGS = {
   }
 };
 
-// 声音文件 - 使用空函数模拟
-// 实际项目中应使用真实的音频文件
+// Sound effects - using empty functions as placeholders
+// In a real project, you should use actual audio files
 const soundEffects = {
   buttonPress: (color: string) => {
-    // 不同颜色按钮的音调
+    // Different color button tones
     const tones: {[key: string]: number} = {
       'red': 262, // C4
       'green': 330, // E4
@@ -159,7 +159,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
 }) => {
   const { t } = useTranslation();
   
-  // 状态
+  // State
   const [gameStatus, setGameStatus] = useState<'idle' | 'showingSequence' | 'playerTurn' | 'gameover'>('idle');
   const [sequence, setSequence] = useState<number[]>([]);
   const [playerSequence, setPlayerSequence] = useState<number[]>([]);
@@ -176,12 +176,12 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
   
-  // 计时器引用
+  // Timer references
   const sequenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const playerTimerRef = useRef<NodeJS.Timeout | null>(null);
   const feedbackTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // 清理所有计时器
+  // Clear all timers
   const clearAllTimers = useCallback(() => {
     if (sequenceTimerRef.current) {
       clearTimeout(sequenceTimerRef.current);
@@ -197,7 +197,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     }
   }, []);
   
-  // 播放声音
+  // Play sound
   const playSound = useCallback((soundType: string, color?: string) => {
     if (!soundEnabled) return;
     
@@ -219,7 +219,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     }
   }, [soundEnabled]);
   
-  // 重置游戏
+  // Reset game
   const resetGame = useCallback(() => {
     clearAllTimers();
     setGameStatus('idle');
@@ -235,12 +235,12 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     setCurrentStreak(0);
   }, [clearAllTimers, difficulty]);
   
-  // 切换难度时重置游戏
+  // Reset game when difficulty changes
   useEffect(() => {
     resetGame();
   }, [difficulty, resetGame]);
   
-  // 生成随机序列
+  // Generate random sequence
   const generateSequence = useCallback((length: number) => {
     const newSequence = [];
     for (let i = 0; i < length; i++) {
@@ -249,7 +249,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     return newSequence;
   }, []);
   
-  // 开始新一轮
+  // Start new round
   const startNewRound = useCallback(() => {
     clearAllTimers();
     setButtonFeedback(null);
@@ -267,15 +267,15 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     const newSequence = generateSequence(sequenceLength);
     setSequence(newSequence);
     setPlayerSequence([]);
-    setFeedbackMessage(t('watch_sequence'));
+    setFeedbackMessage(t('watch_sequence', 'Watch the sequence carefully'));
     
-    // 显示序列给玩家
+    // Show sequence to player
     let currentIndex = 0;
     
     const showNextButton = () => {
       if (currentIndex < newSequence.length) {
         setActiveButton(newSequence[currentIndex]);
-        // 播放按钮声音
+        // Play button sound
         playSound('button', BUTTON_COLORS[newSequence[currentIndex]]);
         
         sequenceTimerRef.current = setTimeout(() => {
@@ -287,12 +287,12 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           }, settings.interval / 2);
         }, settings.interval);
       } else {
-        // 序列显示完成，玩家回合
+        // Sequence display completed, player's turn
         setActiveButton(null);
         setGameStatus('playerTurn');
-        setFeedbackMessage(t('your_turn'));
+        setFeedbackMessage(t('your_turn', 'Your turn! Repeat the sequence'));
         
-        // 设置玩家计时器
+        // Set player timer
         setPlayerTimeLeft(settings.playerTime * newSequence.length / 1000);
         const startTime = Date.now();
         const totalTime = settings.playerTime * newSequence.length;
@@ -312,17 +312,17 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       }
     };
     
-    // 开始显示序列
+    // Start displaying sequence
     showNextButton();
   }, [generateSequence, level, settings, highestSequence, t, playSound]);
   
-  // 处理游戏结束
+  // Handle game over
   const handleGameOver = useCallback(() => {
     clearAllTimers();
     setGameStatus('gameover');
-    setFeedbackMessage(t('game_over'));
+    setFeedbackMessage(t('game_over', 'Game Over'));
     
-    // 更新最佳连击
+    // Update best streak
     if (currentStreak > bestStreak) {
       setBestStreak(currentStreak);
     }
@@ -331,36 +331,36 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       onGameComplete(score, level, highestSequence);
     }
     
-    // 显示结束动画
+    // Show end animation
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 }
     });
     
-    // 播放结束声音
+    // Play end sound
     playSound('error');
   }, [clearAllTimers, score, level, highestSequence, onGameComplete, t, currentStreak, bestStreak, playSound]);
   
-  // 处理玩家点击按钮
+  // Handle player button click
   const handleButtonClick = useCallback((index: number) => {
     if (gameStatus !== 'playerTurn') return;
     
-    // 播放按钮声音
+    // Play button sound
     playSound('button', BUTTON_COLORS[index]);
     
     const updatedPlayerSequence = [...playerSequence, index];
     setPlayerSequence(updatedPlayerSequence);
     
-    // 检查玩家输入是否正确
+    // Check if player input is correct
     const isCorrect = updatedPlayerSequence.every(
       (buttonIndex, i) => buttonIndex === sequence[i]
     );
     
     if (!isCorrect) {
-      // 玩家输入错误
+      // Player input error
       setButtonFeedback({ index, type: 'error' });
-      // 播放错误声音
+      // Play error sound
       playSound('error');
       feedbackTimerRef.current = setTimeout(() => {
         handleGameOver();
@@ -368,20 +368,20 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       return;
     }
     
-    // 显示成功反馈
+    // Show success feedback
     setButtonFeedback({ index, type: 'success' });
     
-    // 更新连击数
+    // Update streak
     setCurrentStreak(prev => prev + 1);
     
     if (updatedPlayerSequence.length === sequence.length) {
-      // 玩家完成了整个序列
+      // Player completed the entire sequence
       clearAllTimers();
       
-      // 播放成功声音
+      // Play success sound
       playSound('success');
       
-      // 计算得分 - 基于序列长度、剩余时间和当前连击
+      // Calculate score - based on sequence length, remaining time, and current streak
       const basePoints = sequence.length * 10;
       const timeBonus = Math.round(playerTimeLeft * 5);
       const streakBonus = Math.round(currentStreak * 2);
@@ -389,24 +389,24 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       
       setScore(prevScore => prevScore + roundScore);
       
-      // 升级
+      // Level up
       setLevel(prevLevel => prevLevel + 1);
       setShowLevelUp(true);
       
-      // 播放升级声音
+      // Play level up sound
       playSound('levelUp');
       
-      // 小型庆祝
+      // Small celebration
       confetti({
         particleCount: 50,
         spread: 40,
         origin: { y: 0.7 }
       });
       
-      // 显示成功消息，包含得分明细
-      setFeedbackMessage(`${t('level_complete')}! +${basePoints} +${timeBonus} +${streakBonus} = +${roundScore} ${t('points')}`);
+      // Show success message, including score details
+      setFeedbackMessage(`${t('level_complete', 'Level Complete')}! +${basePoints} +${timeBonus} +${streakBonus} = +${roundScore} ${t('points', 'points')}`);
       
-      // 3秒后开始新一轮
+      // 3 seconds after starting new round
       feedbackTimerRef.current = setTimeout(() => {
         setShowLevelUp(false);
         startNewRound();
@@ -414,24 +414,24 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
     }
   }, [gameStatus, playerSequence, sequence, playerTimeLeft, handleGameOver, clearAllTimers, startNewRound, t, currentStreak, playSound]);
   
-  // 开始游戏
+  // Start game
   const startGame = useCallback(() => {
     resetGame();
     setCurrentStreak(0);
     startNewRound();
   }, [resetGame, startNewRound]);
   
-  // 组件卸载时清理
+  // Clean up on component unmount
   useEffect(() => {
     return () => {
       clearAllTimers();
     };
   }, [clearAllTimers]);
   
-  // 计算玩家计时器进度百分比
+  // Calculate player timer progress percentage
   const playerTimePercentage = playerTimeLeft / (settings.playerTime * sequence.length / 1000) * 100;
   
-  // 切换声音设置
+  // Toggle sound setting
   const toggleSound = () => {
     setSoundEnabled(!soundEnabled);
   };
@@ -443,22 +443,22 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-gray-200 dark:bg-gray-800 rounded-lg shadow px-4 py-2 z-10">
         <div className="flex justify-around text-center">
           <div className="flex-1">
-            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('level')}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('level', 'Level')}</div>
             <div className="text-xl font-bold">{level}</div>
           </div>
           <div className="border-l border-gray-300 dark:border-gray-600 h-8 self-center mx-2"></div>
           <div className="flex-1">
-            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('score')}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('score', 'Score')}</div>
             <div className="text-xl font-bold">{score}</div>
           </div>
           <div className="border-l border-gray-300 dark:border-gray-600 h-8 self-center mx-2"></div>
           <div className="flex-1">
-            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('sequence')}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('sequence', 'Sequence')}</div>
             <div className="text-xl font-bold">{sequence.length}</div>
           </div>
           <div className="border-l border-gray-300 dark:border-gray-600 h-8 self-center mx-2"></div>
           <div className="flex-1">
-            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('streak')}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('streak', 'Streak')}</div>
             <div className="text-xl font-bold">{currentStreak}</div>
           </div>
         </div>
@@ -475,7 +475,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           }`}
           disabled={gameStatus !== 'idle'}
         >
-          {t('easy')}
+          {t('easy', 'Easy')}
         </button>
         <button
           onClick={() => setSettings(DIFFICULTY_SETTINGS.medium)}
@@ -486,7 +486,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           }`}
           disabled={gameStatus !== 'idle'}
         >
-          {t('medium')}
+          {t('medium', 'Medium')}
         </button>
         <button
           onClick={() => setSettings(DIFFICULTY_SETTINGS.hard)}
@@ -497,7 +497,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           }`}
           disabled={gameStatus !== 'idle'}
         >
-          {t('hard')}
+          {t('hard', 'Hard')}
         </button>
       </div>
       
@@ -506,7 +506,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
         <button 
           onClick={toggleSound}
           className="p-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
-          aria-label={soundEnabled ? t('mute_sound') : t('enable_sound')}
+          aria-label={soundEnabled ? t('mute_sound', 'Mute Sound') : t('enable_sound', 'Enable Sound')}
         >
           {/* Sound Icons */}
           {soundEnabled ? (
@@ -523,14 +523,14 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           {feedbackMessage}
         </div>
         
-        {/* 升级信息 */}
+        {/* Level Up Information */}
         {showLevelUp && (
           <div className="level-badge">
-            {t('level')} {level}
+            {t('level', 'Level')} {level}
           </div>
         )}
         
-        {/* 颜色按钮 */}
+        {/* Color Buttons */}
         <div 
           className="sequence-grid mb-6"
           style={{ 
@@ -550,7 +550,7 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           ))}
         </div>
         
-        {/* 玩家计时条 */}
+        {/* Player Timer Bar */}
         {gameStatus === 'playerTurn' && (
           <div className="timer-bar w-full max-w-sm">
             <div 
@@ -568,14 +568,14 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
           disabled={gameStatus !== 'idle' && gameStatus !== 'gameover'}
           className="px-6 py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {gameStatus === 'gameover' || gameStatus === 'idle' ? t('start_game') : t('game_in_progress')}
+          {gameStatus === 'gameover' || gameStatus === 'idle' ? t('start_game', 'Start Game') : t('game_in_progress', 'Game in Progress')}
         </button>
         
         <button
           onClick={onExit}
           className="px-6 py-3 rounded-lg bg-gray-500 text-white font-semibold hover:bg-gray-600 transition-colors"
         >
-          {t('exit')}
+          {t('exit', 'Exit')}
         </button>
       </div>
       
@@ -583,26 +583,26 @@ const SequenceRecall: React.FC<SequenceRecallProps> = ({
       {gameStatus === 'gameover' && (
         <div className="game-over-overlay">
           <div className="game-over-content dark:bg-gray-800">
-            <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">{t('game_over')}</h2>
+            <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">{t('game_over', 'Game Over')}</h2>
             <div className="space-y-3 mb-6 text-gray-700 dark:text-gray-300">
-              <p>{t('final_score')}: <span className="font-bold text-xl">{score}</span></p>
-              <p>{t('level_reached')}: {level}</p>
-              <p>{t('longest_sequence')}: {highestSequence}</p>
-              <p>{t('highest_streak')}: {Math.max(bestStreak, currentStreak)}</p>
+              <p>{t('final_score', 'Final Score')}: <span className="font-bold text-xl">{score}</span></p>
+              <p>{t('level_reached', 'Level Reached')}: {level}</p>
+              <p>{t('longest_sequence', 'Longest Sequence')}: {highestSequence}</p>
+              <p>{t('highest_streak', 'Highest Streak')}: {Math.max(bestStreak, currentStreak)}</p>
             </div>
             <div className="flex space-x-3 justify-center">
               <button
                 onClick={startGame}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
               >
-                {t('play_again')}
+                {t('play_again', 'Play Again')}
               </button>
               {onExit && (
                 <button
                   onClick={onExit}
                   className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors"
                 >
-                  {t('exit')}
+                  {t('exit', 'Exit')}
                 </button>
               )}
             </div>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ThemeSwitcher from './ThemeSwitcher';
 import LanguageSwitcher from './LanguageSwitcher';
 
 // Mock data for categories (should be moved to a common data file later)
@@ -84,13 +83,13 @@ const Header: React.FC = () => {
 
   // Logo component to reuse in both desktop and mobile views
   const Logo = () => (
-    <Link to="/" className="flex items-center mb-4 p-2">
-      <div className="bg-purple-700 dark:bg-purple-800 rounded-md p-2 flex items-center shadow-sm mr-2">
-        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+    <Link to="/" className="flex items-center p-2">
+      <div className="bg-purple-800 rounded-md p-2 flex items-center shadow-md mr-3">
+        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d="M21.17,2.06A13.1,13.1,0,0,0,19,1.87a12.94,12.94,0,0,0-7,2.05,12.94,12.94,0,0,0-7-2,13.1,13.1,0,0,0-2.17.19,1,1,0,0,0-.83,1v12a1,1,0,0,0,1.17,1,10.9,10.9,0,0,1,8.25,1.91l.12.07.13,0a.91.91,0,0,0,.53,0l.13,0,.12-.07A10.9,10.9,0,0,1,20.83,16a1,1,0,0,0,1.17-1v-12A1,1,0,0,0,21.17,2.06ZM11,15.35a12.87,12.87,0,0,0-6-1.48c-.33,0-.66,0-1,0v-10a8.69,8.69,0,0,1,1,0,10.86,10.86,0,0,1,6,1.8Zm9-1.44c-.34,0-.67,0-1,0a12.87,12.87,0,0,0-6,1.48V5.67a10.86,10.86,0,0,1,6-1.8,8.69,8.69,0,0,1,1,0Z" />
         </svg>
       </div>
-      <span className="text-lg font-bold text-white">
+      <span className="text-xl font-bold text-white">
         {t('app_name', 'BrainWeb')}
       </span>
     </Link>
@@ -100,11 +99,11 @@ const Header: React.FC = () => {
     <header className="bg-white dark:bg-gray-900 shadow-sm fixed top-0 left-0 w-full z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center flex-shrink-0">
+          <div className="flex items-center">
             <Logo />
           </div>
 
-          <div className="hidden md:flex flex-grow items-center justify-center px-4">
+          <div className="hidden md:flex flex-1 items-center justify-center px-4">
             <div className="w-full max-w-lg">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <input
@@ -135,10 +134,6 @@ const Header: React.FC = () => {
           </div>
 
           <div className="flex items-center flex-shrink-0">
-            <div className="ml-3">
-              <ThemeSwitcher />
-            </div>
-
             <div className="ml-3">
               <LanguageSwitcher />
             </div>

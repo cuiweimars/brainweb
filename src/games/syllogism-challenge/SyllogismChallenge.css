@@ -1,0 +1,318 @@
+/* SyllogismChallenge.css */
+
+.syllogism-game {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: #e5e7eb;
+}
+
+/* Game screens (intro, gameplay, etc.) */
+.syllogism-intro,
+.syllogism-game-over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  background-color: #1f2937;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+  min-height: 500px;
+  color: #e5e7eb;
+}
+
+.syllogism-intro-title,
+.syllogism-game-over-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 20px;
+}
+
+.syllogism-intro-image,
+.syllogism-game-over-image {
+  max-width: 200px;
+  margin-bottom: 24px;
+}
+
+.syllogism-intro-text,
+.syllogism-game-over-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d1d5db;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+/* Difficulty selector */
+.syllogism-difficulty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0 30px;
+}
+
+.syllogism-difficulty-button {
+  padding: 10px 20px;
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  background-color: #374151;
+  color: #e5e7eb;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.syllogism-difficulty-button:hover {
+  background-color: #4b5563;
+  transform: translateY(-2px);
+}
+
+.syllogism-difficulty-button.selected {
+  border-color: #6366f1;
+  color: #a5b4fc;
+}
+
+/* Buttons */
+.syllogism-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 5px;
+}
+
+.syllogism-button-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.syllogism-button-primary:hover {
+  background-color: #4338ca;
+}
+
+.syllogism-button-secondary {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.syllogism-button-secondary:hover {
+  background-color: #4b5563;
+}
+
+.syllogism-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Game header */
+.syllogism-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.syllogism-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.syllogism-info {
+  display: flex;
+  gap: 20px;
+}
+
+.syllogism-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.syllogism-stat-label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.syllogism-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+/* Game content area */
+.syllogism-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f2937;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.syllogism-problem {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #2d3748;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.syllogism-premises {
+  margin-bottom: 20px;
+}
+
+.syllogism-premise {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #3730a3;
+  color: #e0e7ff;
+  border-radius: 6px;
+}
+
+.syllogism-conclusion-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.syllogism-option {
+  padding: 15px;
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #374151;
+  text-align: left;
+  font-size: 16px;
+  color: #e5e7eb;
+}
+
+.syllogism-option:hover {
+  border-color: #818cf8;
+  background-color: #4b5563;
+}
+
+.syllogism-option.selected {
+  border-color: #6366f1;
+  background-color: #4338ca;
+  color: #e0e7ff;
+}
+
+.syllogism-option.correct {
+  border-color: #10b981;
+  background-color: #065f46;
+  color: #d1fae5;
+}
+
+.syllogism-option.incorrect {
+  border-color: #ef4444;
+  background-color: #7f1d1d;
+  color: #fee2e2;
+}
+
+.syllogism-explanation {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #78350f;
+  border-radius: 8px;
+  border-left: 4px solid #d97706;
+  color: #fbbf24;
+}
+
+.syllogism-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.syllogism-timer {
+  width: 100%;
+  height: 6px;
+  background-color: #4b5563;
+  border-radius: 3px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.syllogism-timer-fill {
+  height: 100%;
+  background-color: #6366f1;
+  transition: width 1s linear;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.syllogism-option {
+  animation: fadeIn 0.3s ease;
+}
+
+.syllogism-problem {
+  animation: slideIn 0.4s ease;
+}
+
+/* Feedback animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.syllogism-feedback {
+  animation: pulse 0.5s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .syllogism-difficulty-selector {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .syllogism-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .syllogism-intro, 
+  .syllogism-game-over {
+    padding: 20px;
+  }
+  
+  .syllogism-problem {
+    padding: 15px;
+  }
+}
+
+/* Button row */
+.syllogism-buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+} 

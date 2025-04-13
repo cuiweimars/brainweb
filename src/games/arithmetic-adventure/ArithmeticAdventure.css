@@ -1,0 +1,315 @@
+/* Arithmetic Adventure Game Styles */
+.arithmetic-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4f46e5;
+  text-align: center;
+  min-height: 40px;
+  transition: all 0.3s ease;
+}
+
+.problem-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  padding: 2rem;
+  z-index: 2;
+}
+
+.arithmetic-problem {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+
+.dark .arithmetic-problem {
+  background-color: rgba(55, 65, 81, 0.9);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.operation {
+  margin: 0 0.5rem;
+  color: #6366F1;
+}
+
+.dark .operation {
+  color: #818CF8;
+}
+
+.question-mark {
+  color: #F59E0B;
+  font-weight: bold;
+  font-size: 2.8rem;
+  animation: pulse 1.5s infinite;
+}
+
+.dark .question-mark {
+  color: #FBBF24;
+}
+
+.answers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 0 auto 2rem;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.answer-button {
+  aspect-ratio: 16/9;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  background-color: white;
+  color: #1F2937;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark .answer-button {
+  background-color: #374151;
+  color: #F3F4F6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.answer-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.answer-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.answer-button:hover::after {
+  opacity: 0.2;
+}
+
+.answer-button.selected {
+  transform: scale(1.05);
+}
+
+.answer-button.correct, .answer-button.correct-answer {
+  background-color: #10B981;
+  color: white;
+  border-color: #059669;
+  animation: success-pulse 0.5s ease;
+}
+
+.answer-button.incorrect {
+  background-color: #EF4444;
+  color: white;
+  border-color: #DC2626;
+  animation: error-pulse 0.5s ease;
+}
+
+.timer-bar {
+  width: 100%;
+  max-width: 500px;
+  height: 0.5rem;
+  background-color: rgba(209, 213, 219, 0.5);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.dark .timer-bar {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.timer-progress {
+  height: 100%;
+  background-color: #6366F1;
+  border-radius: 9999px;
+  transition: width 0.1s linear;
+}
+
+.timer-progress.bg-red-500 {
+  animation: timer-critical 0.5s infinite alternate;
+}
+
+.game-over-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fade-in 0.3s ease-in-out;
+}
+
+.game-over-content {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slide-up 0.3s ease-out;
+}
+
+.dark .game-over-content {
+  background-color: #1F2937;
+}
+
+.level-badge {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: level-up 1s ease;
+  box-shadow: 0 4px 12px rgba(125, 92, 246, 0.4);
+  z-index: 10;
+}
+
+.feedback-message {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  min-height: 2rem;
+  color: #6366F1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark .feedback-message {
+  color: #818CF8;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+@keyframes success-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes error-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes timer-critical {
+  from {
+    background-color: #EF4444;
+  }
+  to {
+    background-color: #B91C1C;
+  }
+}
+
+@keyframes level-up {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .arithmetic-problem {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+  
+  .answers-grid {
+    gap: 0.75rem;
+  }
+  
+  .answer-button {
+    font-size: 1.25rem;
+  }
+  
+  .level-badge, .feedback-message {
+    font-size: 1.25rem;
+  }
+} 

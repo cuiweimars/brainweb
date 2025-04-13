@@ -35,7 +35,7 @@ const GameOfTheDay: React.FC<GameOfTheDayProps> = ({ game, className = '' }) => 
           </Link>
         </div>
 
-        <GameCard game={game} variant="featured" />
+        <GameCard game={game} featured={true} />
       </div>
     </div>
   );

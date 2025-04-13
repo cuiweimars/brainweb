@@ -13,11 +13,13 @@ const TopNavigation: React.FC = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md dark:bg-gray-800">
+    <nav className="sticky top-16 z-40 bg-white shadow-md dark:bg-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🧠</span>
+          <Link to="/" className="flex items-center">
+            <div className="bg-purple-800 rounded-md p-2 flex items-center shadow-md mr-3">
+              <span className="text-xl text-white">🧠</span>
+            </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">BrainWeb</span>
           </Link>
 

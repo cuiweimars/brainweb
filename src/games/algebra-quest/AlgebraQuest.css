@@ -1,0 +1,224 @@
+﻿.algebra-quest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 70vh;
+  font-family: 'Arial', sans-serif;
+}
+
+.algebra-quest h1 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Game intro styles */
+.game-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.game-instructions {
+  margin-bottom: 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.start-button, .exit-button, .submit-button, .hint-button, .next-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  margin: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+}
+
+.start-button:hover {
+  background-color: #2980b9;
+}
+
+.exit-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+}
+
+.exit-button:hover {
+  background-color: #c0392b;
+}
+
+/* Game playing styles */
+.game-playing {
+  width: 100%;
+  max-width: 600px;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.score-display, .timer-display, .problem-counter {
+  font-weight: bold;
+}
+
+.timer-display {
+  color: #e74c3c;
+}
+
+.problem-display {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.problem-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 1rem 0;
+  white-space: pre-wrap;
+}
+
+.answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-weight: bold;
+}
+
+.input-group input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-button {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+}
+
+.submit-button:hover {
+  background-color: #27ae60;
+}
+
+.hint-button {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+}
+
+.hint-button:hover {
+  background-color: #d35400;
+}
+
+.hint-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.hint-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #fef9e7;
+  border-left: 4px solid #f39c12;
+  border-radius: 4px;
+}
+
+/* Game feedback styles */
+.game-feedback {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.correct-answer {
+  margin: 1.5rem 0;
+}
+
+.answer-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+.next-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+}
+
+.next-button:hover {
+  background-color: #2980b9;
+}
+
+/* Game complete styles */
+.game-complete {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.final-score {
+  margin: 2rem 0;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2ecc71;
+}

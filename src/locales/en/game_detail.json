@@ -1,1 +1,22 @@
- 
+{
+  "logic_grid_rule_1": "Solve the logic grid puzzle using the provided clues",
+  "logic_grid_rule_2": "Cell markings: ✓ indicates correct match, ✗ indicates no match, ? indicates maybe",
+  "logic_grid_rule_3": "Click on grid cells to cycle marks: empty -> ✓ -> ✗ -> ? -> empty",
+  "logic_grid_rule_4": "Gain points for correct cell markings, lose points for mistakes",
+  "logic_grid_rule_5": "Use limited hints when stuck on difficult puzzles",
+  "logic_grid_rule_6": "Solve the puzzle within the time limit for maximum score",
+  "math_challenge_instructions": "Test and improve your math skills with our interactive Math Challenge game. Choose from three difficulty levels to match your skill level. The game includes various operations (addition, subtraction, multiplication, division) that adapt to your performance. Answer questions correctly to earn points and bonuses for speed and accuracy. Try to complete as many problems as possible before time runs out and track your progress with detailed statistics.",
+  "math_challenge.rule_1": "Solve various math problems to earn points",
+  "math_challenge.rule_2": "Different operators and number ranges based on difficulty level",
+  "math_challenge.rule_3": "Choose the correct answer from four options",
+  "math_challenge.rule_4": "Earn 10 points for each correct answer",
+  "math_challenge.rule_5": "Complete as many problems as possible before time runs out",
+  "math_challenge.rule_6": "Pause the game or adjust sound settings anytime",
+  "speed_calculation_instructions": "Challenge your mental math skills with our Speed Calculation game. Solve arithmetic problems as quickly as possible to earn more points. The faster you answer, the higher your score!",
+  "speed_calculation.rule_1": "Solve math problems against the clock",
+  "speed_calculation.rule_2": "Each question has its own timer - answer before it runs out",
+  "speed_calculation.rule_3": "Faster answers earn more bonus points",
+  "speed_calculation.rule_4": "Different difficulty levels offer various operations and number ranges",
+  "speed_calculation.rule_5": "Build a streak of correct answers for the highest score",
+  "speed_calculation.rule_6": "Beat your previous record with each play"
+} 

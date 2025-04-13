@@ -1,0 +1,60 @@
+class SoundManager {
+    private sounds: Map<string, HTMLAudioElement> = new Map();
+    private isMuted: boolean = false;
+  
+    constructor() {
+      // Default sounds
+      this.loadDefaultSounds();
+    }
+  
+    private loadDefaultSounds() {
+      // Using base64 encoded WAV data for simple sounds
+      // This allows the game to have sound effects without external assets
+      const correctSound = "data:audio/wav;base64,UklGRlQFAABXQVZFZm10IBAAAAABAAEARKwAAESsAAABAAgAZGF0YTAFAACAf3ZvZWZdVE9IRUJAQ0VJT1hic4SOmaSvuMHJ0NTa3uDe29bPx72xpJmMfm9hUkU5LSIZEQoGAwIEBwwTHCgzP0xZZ3aBkJ2qs73IztTY3N7e29fRycG4raOYjX5vYFJFOC0hGA8IBAEBBAkQGCQvO0dTYG13hpOeqrW/yc/V2dze3tzX0Mi/tqqfk4R0ZVdKPTEkGA0GAQAABQwWITA9SVZjcX6Lmaawu8XP1Nnc3t7c2NLKwbmuopeLfG1fUUQ3KyAVDQYCAAIGDhckMT5KV2RyfomXpq+5w83T1trd3dzY0szDu7CmlohzbF5QQzYqHxQMBQEAAQYOFyQxPkpXZHJ+iZemr7nDzdPW2t3d3NjSzMO7sKaWiHNsXlBDNiofFA0GAgABBg4XJDE+SldkcX6JlqWvucPM0tXZ3N3c2NLMw7uwppWHc2xeUEM2Kh8UDQYCAAEGDhckMT5KV2RxfomWpa65wsvR1Nnc3dzY0szDu7CmlYdzbF5QQzYqHxQNBgIAAQYOFyQxPkpXZHF+iZalrrnCy9HU2dzd3NjSzMO7sKaVh3NsXlBDNiofFA0GAgABBg4XJDE+SldkcX6JlqWuucLL0dTZ3N3c2NLMw7uwppWHc2xeUEM2Kh8UDQYCAAEGDhckMT5KV2RxfomWpa65wsvR1Nnc3dzY0szDu7CmlYdzbF5QQzYqHxQNBgIAAQYOFyQxPkpXZHF+iZalrrnCy9HU2dzd3NjSzMO7sKaVh3NsXlBDNiofFA0GAgABBg4XJDE+SldkcX6JlqWuucLL0dTZ3N3c2NLMw7uwppWHc2xeUEM2Kh8UDQYCAAEGDhckMT5KV2RxfomWpa65wsvR1Nnc3dzY0szDu7CmlYdzbF5QQzYqHxQNBgIAAQYOFyQxPkpXZHF+iZalrrnCy9HU2dzd3NjSzMO7sKaVh3NsXlBDNiofFA0GAgABBg4XJDE+SldkcX6JlqWuucLL0dTZ3N3c2NLMw7uwppWHc2xeUEM2Kh8UDQYCAAEGDhckMT5KV2RxfomWpa65wsvR1Nnc3dzY0szDu7CmlYdzbF5QQzYqHxQNBgIAAQYOFyQxPkpXZHF+iZalrrnCy9HU2dzd3NjSzMO7sKaVh3NsXlBDNiofFA0GAgABBg4XJDE+SldkcX6JlqWuucLL0dTZ3N3c2NLMw7uwppWHc2xeUEM2Kh8UDQYCAAEGDhckMT5KV2RxfomWpa65wsvR1Nnc3dzY0szDu7CmlYdzbF5QQzYqHxQNBgIAAQYOFyQxPkpXZHF+iZalrrnCy9HU2dzd3NjSzMO7sKaVh3NsXlBEOi8kGA8GAgEECxIbJTBAS1hjc4WVqLzN3Ovz+Pv9/Pjw5dTGtqCJcVZBLRkJAA==";
+      const wrongSound = "data:audio/wav;base64,UklGRrQEAABXQVZFZm10IBAAAAABAAEARKwAAESsAAABAAgAZGF0YZAEAACAakI4MykoJB0bGhkaHB0gIywwOkBGTFJYXWJmaGlqaWhlYl5ZU01GPzgwKiQeGBMPCwkHBQQFBggLDhMYHiQqMTg/RkxSV1xiZmlsbW5ubGpnZGBcV1NNSEMrIAgAAIBqQjgzKSgkHRsaGRocHSAjLDA6QEZMUlhdYmZoaWppZmJeWVNNRj84MCoiHQ4IAACAakI4MykoJB0bGhkaHB0gIywwOkBGTFJYXWJmaGlqaWZiXllTTUY/ODAqIh0OCACAgGpCODMpKCQdGxoZGhwdICMsMDpARkxSWF1iZmhpamJdWlNNRj84MCoiHQ4IAICcXEItJiQeFQwEAAFKTUZANzEtLCstMDI2OkBESUxQUlRVVFJRTkxJRUE9ODQvKyciHRgTDwsIBQMCAgMFCAsMDxMXGx8jJyswNDk9QURISkxNTk9PTk1LSUdEQT05NTIuKiUhHFc6LiAZFRIIAABFQjgzKSgkHRsaGRocHSAjLDA6QEZMUlhdYmZoaWppZmJeWVNNRj84MCoiHRkUDgoIRFZaXFtZVlRRT01KR0RCPz05NjQzMzM0NTc4Oz5BR0xQVFldYGJkZmdnaGhoZ2dmZWRjYmBfXVtYV1VUTE1LSUdFQ0JBQD8/Pz8/QEBBQUFCQkNDREVGR0hJSkpLTExNTk5PT1BQUVFSUlNTVFRVVVZWV1dYWFlZWlpbW1xcXV1eXl9fYGBhYWJiY2NkZGRlZWZmZ2doaGlpa2tsbG1tbm5vb3BwcXFycnNzdHR1dXZ2d3d4eHl5enp7e3x8fX1+fn9/gICBgYKCg4OEhIWFhoaHh4iIiYmKiouLjIyNjY6Oj4+QkJGRkpKTk5SUlZWWlpeXmJiZmZqam5ucnJ2dnp6fn6CgoaGioqOjpKSlpaampqeoqKmpqqqrq6ysra2urq+vsLCxsbKys7O0tLW1tra3t7i4ubm6uru7vLy9vb6+v7/AwMHBwsLDw8TExcXGxsfHyMjJycpJRj84MCoiHRkUDgoIBQMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKR0E7NzIuKygmJCMjIiIkJCYnKSstLzI0Nzo9QEJFR0pMTlBRU1RVVldXWFhYWVhYWFhXV1ZWVVRTUlFPTkxLSUhGRUNBQD48Ozo4NzY0MzIxMC8uLi0sLCwsLCwsLS0uLi8wMTIzNDY3OTo8PkBCQ0VGSElLTE5PUFFSVFVWVFQwJwsAAAAAAABESUxQUlRVVFJRTkxJRUE9ODQvKyciHRgTDwsIBQMCAgMFCAsMDxMXGx8jJyswNDk9QURISkxNTk9PTk1LSUdEQT05NTIuKiUhHRkVEQ0KBwUEAgEAAQIDBAYICgsOEBIUFhgaHB4fICIjJSYnKCkqKisrKyssLC0tLCwsKyssLCwtLS4uLzAxMTIzNDU2Nzg5";
+      const successSound = "data:audio/wav;base64,UklGRpQHAABXQVZFZm10IBAAAAABAAEARKwAAESsAAABAAgAZGF0YXAHAACAf31xeHN0cnJ0dXh7foOIi46PlJOSko+OjIqJiIeGhoWEg4KAfn17eHZ0cnBvbm1tbGxrbGxsbG1tb3BxcnR1d3h6e3x+f4CAgICAf39+fXx7enl4d3Z1dHNycXBvbm1sa2ppZ2ZlZGNiYmFhYWFhYWFiYmNjZGVmZ2hpamtsbW5vcHFyc3R1dXZ3d3h4eHl5eXl5eXl5eHh4d3d2dnV1dHRzc3JycXFwcG9vb25ubm5ubm5ubm9vb3BwcXFycnNzdHR1dXZ2dnd3eHh4eXl5eXl6enp6enp6enp6enp6enp5eXl5eXh4eHh4d3d3d3d2dnZ2dnV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV2dnZ2dnd3d3d3eHh4eHh5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6";
+      
+      const audioCorrect = new Audio(correctSound);
+      const audioWrong = new Audio(wrongSound);
+      const audioSuccess = new Audio(successSound);
+      
+      this.sounds.set("correct", audioCorrect);
+      this.sounds.set("wrong", audioWrong);
+      this.sounds.set("success", audioSuccess);
+    }
+  
+    loadSound(name: string, url: string): void {
+      const audio = new Audio(url);
+      this.sounds.set(name, audio);
+    }
+  
+    playSound(name: string): void {
+      if (this.isMuted) return;
+      
+      const sound = this.sounds.get(name);
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(err => console.error("Error playing sound:", err));
+      }
+    }
+  
+    mute(): void {
+      this.isMuted = true;
+    }
+  
+    unmute(): void {
+      this.isMuted = false;
+    }
+  
+    toggleMute(): void {
+      this.isMuted = !this.isMuted;
+    }
+  
+    get muted(): boolean {
+      return this.isMuted;
+    }
+  }
+  
+  // Singleton instance
+  const soundManager = new SoundManager();
+  export default soundManager; 

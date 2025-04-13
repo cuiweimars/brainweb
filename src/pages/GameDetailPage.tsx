@@ -1,8 +1,9 @@
-import React, { useMemo, useState, lazy, Suspense, useCallback } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import React, { useMemo, useState, lazy, Suspense, useCallback, useEffect } from 'react';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { allGames } from '../data/mockData';
 import GameReviews from '../components/GameReviews';
+import { Helmet } from 'react-helmet-async';
 
 // --- Icon Definitions ---
 // Generic Share Icon
@@ -48,7 +49,7 @@ const TwitterXIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 const WhatsAppIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className || 'w-8 h-8'} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.273-.099-.471-.148-.67.15-.197.297-.768.967-.941 1.164-.173.197-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.67-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm-3.999-3.551c-.91 0-1.648.739-1.648 1.649 0 .91.739 1.648 1.648 1.648.911 0 1.649-.739 1.649-1.648 0-.91-.738-1.649-1.649-1.649zm4.854 0c-.91 0-1.649.739-1.649 1.649 0 .91.739 1.648 1.649 1.648.91 0 1.648-.739 1.648-1.648 0-.91-.738-1.649-1.648-1.649zm-.915 5.551c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm-5.132 0c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm8.292-4.25c-.66 0-1.194.535-1.194 1.195s.535 1.194 1.194 1.194 1.194-.534 1.194-1.194-.534-1.195-1.194-1.195zm-9.982 0c-.66 0-1.194.535-1.194 1.195s.534 1.194 1.194 1.194 1.194-.534 1.194-1.194-.535-1.195-1.194-1.195zm5.539 1.799c-1.83 0-3.328 1.565-3.328 3.487 0 1.162.551 2.227 1.49 2.953.363.28.852.109.984-.315.133-.423-.03-.9-.435-.999-.47-.119-.818-.406-.97-.788-.18-.445-.269-.919-.269-1.421 0-1.233.951-2.238 2.13-2.238s2.129 1.005 2.129 2.238c0 .502-.089.976-.269 1.421-.152.382-.5.669-.97.788-.405.099-.568.576-.435.999.133.424.621.595.984.315.938-.726 1.49-1.791 1.49-2.953 0-1.922-1.499-3.487-3.329-3.487z" />
   </svg>
 );
 
@@ -60,7 +61,7 @@ const LinkedInIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 const RedditIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className || 'w-8 h-8'} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.347 18.149c-.384.384-1.013.384-1.397 0-.384-.383-.384-1.012 0-1.396.383-.384 1.013-.384 1.397 0 .384.383.384 1.012 0 1.396zm5.146-5.598c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm-3.999-3.551c-.91 0-1.648.739-1.648 1.649 0 .91.739 1.648 1.648 1.648.911 0 1.649-.739 1.649-1.648 0-.91-.738-1.649-1.649-1.649zm4.854 0c-.91 0-1.649.739-1.649 1.649 0 .91.739 1.648 1.649 1.648.91 0 1.648-.739 1.648-1.648 0-.91-.738-1.649-1.648-1.649zm-.915 5.551c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm-5.132 0c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm8.292-4.25c-.66 0-1.194.535-1.194 1.195s.535 1.194 1.194 1.194 1.194-.534 1.194-1.194-.534-1.195-1.194-1.195zm-9.982 0c-.66 0-1.194.535-1.194 1.195s.534 1.194 1.194 1.194 1.194-.534 1.194-1.194-.535-1.195-1.194-1.195zm5.539 1.799c-1.83 0-3.328 1.565-3.328 3.487 0 1.162.551 2.227 1.49 2.953.363.28.852.109.984-.315.133-.423-.03-.9-.435-.999-.47-.119-.818-.406-.97-.788-.18-.445-.269-.919-.269-1.421 0-1.233.951-2.238 2.13-2.238s2.129 1.005 2.129 2.238c0 .502-.089.976-.269 1.421-.152.382-.5.669-.97.788-.405.099-.568.576-.435.999.133.424.621.595.984.315.938-.726 1.49-1.791 1.49-2.953 0-1.922-1.499-3.487-3.329-3.487z" />
+    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.347 18.149c-.384.384-1.013.384-1.397 0-.384-.384-1.396.383-.384 1.013-.384 1.397 0 .384.384 1.012 0 1.396zm5.146-5.598c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm-3.999-3.551c-.91 0-1.648.739-1.648 1.649 0 .91.739 1.648 1.648 1.648.911 0 1.649-.739 1.649-1.648 0-.91-.738-1.649-1.649-1.649zm4.854 0c-.91 0-1.649.739-1.649 1.649 0 .91.739 1.648 1.649 1.648.91 0 1.648-.739 1.648-1.648 0-.91-.738-1.649-1.648-1.649zm-.915 5.551c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm-5.132 0c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm8.292-4.25c-.66 0-1.194.535-1.194 1.195s.535 1.194 1.194 1.194 1.194-.534 1.194-1.194-.534-1.195-1.194-1.195zm-9.982 0c-.66 0-1.194.535-1.194 1.195s.534 1.194 1.194 1.194 1.194-.534 1.194-1.194-.535-1.195-1.194-1.195zm5.539 1.799c-1.83 0-3.328 1.565-3.328 3.487 0 1.162.551 2.227 1.49 2.953.363.28.852.109.984-.315.133-.423-.03-.9-.435-.999-.47-.119-.818-.406-.97-.788-.18-.445-.269-.919-.269-1.421 0-1.233.951-2.238 2.13-2.238s2.129 1.005 2.129 2.238c0 .502-.089.976-.269 1.421-.152.382-.5.669-.97.788-.405.099-.568.576-.435.999.133.424.621.595.984.315.938-.726 1.49-1.791 1.49-2.953 0-1.922-1.499-3.487-3.329-3.487z" />
   </svg>
 );
 // --- End Icon Definitions ---
@@ -179,13 +180,72 @@ const ShareModal: React.FC<ShareModalProps> = ({ gameTitle, gameUrl, onClose }) 
 };
 // --- End Share Modal Component ---
 
+// 相关游戏组件
+interface RelatedGameCardProps {
+  game: typeof allGames[0];
+}
+
+const RelatedGameCard: React.FC<RelatedGameCardProps> = ({ game }) => {
+  const { t } = useTranslation();
+  
+  return (
+    <Link to={`/game/${game.id}`} className="block group">
+      <div className="overflow-hidden rounded-xl bg-gray-800/80 shadow-md shadow-black/30 transition-all duration-300 hover:shadow-xl border border-gray-700 hover:border-indigo-800">
+        <div className="relative aspect-video overflow-hidden rounded-t-xl">
+          <img 
+            src={game.thumbnailUrl} 
+            alt={t(game.title)} 
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-30 group-hover:opacity-70 transition-opacity duration-300"></div>
+        </div>
+        <div className="p-4">
+          <h3 className="mb-2 text-lg font-semibold text-white transition-colors group-hover:text-indigo-400">
+            {t(game.title)}
+          </h3>
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center rounded-full bg-indigo-900/70 px-2.5 py-0.5 text-xs font-medium text-indigo-200">
+              {t(game.category)}
+            </span>
+            <div className="flex items-center">
+              <svg className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <span className="ml-1 text-xs text-gray-400 font-medium">{game.rating}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 // Lazy load game components
 const MemoryMatch = lazy(() => import('../games/memory-match'));
 const MemoryMatchProPlus = lazy(() => import('../games/memory-match-pro-plus'));
+const MemoryMatchBattle = lazy(() => import('../games/memory-match-battle'));
 const SequenceRecall = lazy(() => import('../games/sequence-recall'));
 const SpatialMemory = lazy(() => import('../games/spatial-memory'));
-// AttentionZone removed
-const ConcentrationMaster = React.lazy(() => import('../games/concentration-master'));
+const LogicGrid = React.lazy(() => import('../games/logic-grid'));
+const AttentionZone = React.lazy(() => import('../games/attention-zone'));
+const FocusReflex = React.lazy(() => import('../games/focus-reflex'));
+const FocusMaster = React.lazy(() => import('../games/focus-master'));
+const PatternSolver = React.lazy(() => import('../games/pattern-solver'));
+const SyllogismChallenge = React.lazy(() => import('../games/syllogism-challenge'));
+const BrainPuzzleMaster = React.lazy(() => import('../games/brain-puzzle-master'));
+const ConnectionPaths = React.lazy(() => import('../games/connection-paths'));
+const ArithmeticAdventure = React.lazy(() => import('../games/arithmetic-adventure'));
+const NumberNinja = React.lazy(() => import('../games/number-ninja/NumberNinja'));
+const AlgebraQuest = React.lazy(() => import('../games/algebra-quest'));
+const MathChallenge = React.lazy(() => import('../games/math_challenge'));
+const MathRace = React.lazy(() => import('../games/math-race'));
+const WordWizard = React.lazy(() => import('../games/word-wizard'));
+const SynonymMatch = React.lazy(() => import('../games/synonym-match'));
+const GrammarGuardian = React.lazy(() => import('../games/grammar-guardian'));
+const WordConnections = React.lazy(() => import('../games/word-connections'));
+const WordDuel = React.lazy(() => import('../games/word-duel'));
+const VocabularyBuilder = React.lazy(() => import('../games/vocabulary-builder'));
+const PatternRecognition = React.lazy(() => import('../games/pattern-recognition'));
 
 // Component to show loader while game is loading
 const GameLoader = () => (
@@ -203,15 +263,47 @@ const GameDetailPage: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const game = useMemo(() => {
     return allGames.find(g => g.id === gameId);
   }, [gameId]);
 
+  // 获取相关游戏
+  const relatedGames = useMemo(() => {
+    if (!game) return [];
+    
+    // 根据相同类别或相同难度级别获取相关游戏
+    const sameCategory = allGames.filter(g => 
+      g.id !== gameId && (g.category === game.category || g.difficulty === game.difficulty)
+    );
+    
+    // 随机洗牌
+    const shuffled = [...sameCategory].sort(() => 0.5 - Math.random());
+    
+    // 返回最多4个游戏
+    return shuffled.slice(0, 4);
+  }, [game, gameId]);
+
   const handleGameComplete = (score: number, moves: number, time: number) => {
     console.log('Game completed:', {score, moves, time});
   };
 
+  // Adapter function for MemoryMatchBattle
+  const handleBattleGameComplete = (score: number, time: number) => {
+    // Pass 0 for moves or another default value
+    handleGameComplete(score, 0, time);
+  };
+// Adapter function for ArithmeticAdventure
+  const handleArithmeticGameComplete = (score: number, level: number) => {
+    // Pass level as moves, 0 for time (or another appropriate default)
+    handleGameComplete(score, level, 0);
+  };
+     // Adapter function for NumberNinja
+     const handleNumberNinjaComplete = (score: number, level: number, totalSolved: number) => {
+      // Pass level as moves and totalSolved as time
+      handleGameComplete(score, level, totalSolved);
+    };
   const handleExitGame = () => {
     setIsPlaying(false);
   };
@@ -241,7 +333,15 @@ const GameDetailPage: React.FC = () => {
   }
 
   const renderGame = () => {
-    switch(gameId) {
+    if (!game) return null;
+
+    const commonProps = {
+      difficulty: "medium" as const,
+      onGameComplete: handleGameComplete,
+      onExit: handleExitGame,
+    };
+
+    switch (game.id) {
       case 'memory-match':
         return (
           <Suspense fallback={<GameLoader />}>
@@ -258,6 +358,46 @@ const GameDetailPage: React.FC = () => {
             <MemoryMatchProPlus 
               difficulty={game.difficulty}
               onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'arithmetic-adventure':
+          return (
+            <Suspense fallback={<GameLoader />}>
+            <ArithmeticAdventure
+              difficulty={game.difficulty}
+              onGameComplete={handleArithmeticGameComplete}
+              onExit={handleExitGame}
+            />
+            </Suspense>
+          );  
+        case 'number-ninja':
+          return (
+            <Suspense fallback={<GameLoader />}>
+              <NumberNinja
+                difficulty={game.difficulty}
+                onGameComplete={handleNumberNinjaComplete}
+                onExit={handleExitGame}
+              />
+            </Suspense>
+          );
+        case 'algebra-quest':
+          return (
+            <Suspense fallback={<GameLoader />}>
+              <AlgebraQuest
+                difficulty={game.difficulty}
+                onGameComplete={(score) => handleGameComplete(score, 0, 0)}
+                onExit={handleExitGame}
+              />
+            </Suspense>
+          );
+      case 'memory-match-battle':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <MemoryMatchBattle 
+              difficulty={game.difficulty}
+              onComplete={handleBattleGameComplete}
               onExit={handleExitGame}
             />
           </Suspense>
@@ -282,12 +422,148 @@ const GameDetailPage: React.FC = () => {
             />
           </Suspense>
         );
-      case 'concentration-master':
+      case 'logic-grid':
         return (
           <Suspense fallback={<GameLoader />}>
-            <ConcentrationMaster 
+            <LogicGrid 
               difficulty={game.difficulty}
               onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'attention-zone':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <AttentionZone 
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'focus-reflex':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <FocusReflex 
+              difficulty={game.difficulty}
+              onGameComplete={(score, accuracy, maxCombo) => handleGameComplete(score, accuracy, maxCombo)}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'focus-master':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <FocusMaster 
+              difficulty={game.difficulty}
+              onGameComplete={(score, accuracy, focusTime) => handleGameComplete(score, accuracy, focusTime)}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'pattern-solver':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <PatternSolver 
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'syllogism-challenge':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <SyllogismChallenge 
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'brain-puzzle-master':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <BrainPuzzleMaster
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'connection-paths':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <ConnectionPaths
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'math-race':
+        return (
+          <MathRace
+            {...commonProps}
+          />
+        );
+      case 'word-wizard':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <WordWizard
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'synonym-match':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <SynonymMatch
+              difficulty={game.difficulty}
+              onGameComplete={handleGameComplete}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'word-connections':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <WordConnections
+              difficulty={game.difficulty}
+              onGameComplete={(score, level, categoriesCompleted) => handleGameComplete(score, level, categoriesCompleted)}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'grammar-guardian':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <GrammarGuardian
+              difficulty={game.difficulty}
+              onGameComplete={(score, level, correctAnswers) => handleGameComplete(score, level, correctAnswers)}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'word-duel':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <WordDuel
+              difficulty={game.difficulty}
+              onGameComplete={(score, wordsGuessed, bestStreak) => handleGameComplete(score, wordsGuessed, bestStreak)}
+              onExit={handleExitGame}
+            />
+          </Suspense>
+        );
+      case 'pattern-recognition':
+        return (
+          <Suspense fallback={<GameLoader />}>
+            <PatternRecognition
+              difficulty={game.difficulty}
+              onGameComplete={(score, level, patternsCompleted) => handleGameComplete(score, level, patternsCompleted)}
               onExit={handleExitGame}
             />
           </Suspense>
@@ -322,6 +598,50 @@ const GameDetailPage: React.FC = () => {
           </ul>
         </div>
       );
+    } else if (gameId === 'memory-match-pro-plus') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('memory_match_pro_plus.rule_1', '翻开卡片找到匹配的对子')}</li>
+            <li>{t('memory_match_pro_plus.rule_2', '每次只能翻开两张卡片')}</li>
+            <li>{t('memory_match_pro_plus.rule_3', '如果卡片匹配，则保持正面朝上')}</li>
+            <li>{t('memory_match_pro_plus.rule_4', '记住卡片位置以减少翻牌次数')}</li>
+            <li>{t('memory_match_pro_plus.rule_5', '完成所有匹配对以通过每个关卡')}</li>
+            <li>{t('memory_match_pro_plus.rule_6', '挑战增强版包含更多卡片类型和特殊效果')}</li>
+          </ul>
+          <p className="mt-3 text-gray-700 dark:text-gray-300">
+            {t('memory_match_pro_plus.tips', '提示：尝试创建心理图像或使用位置模式来记住卡片位置。专注力是成功的关键！')}
+          </p>
+        </div>
+      );
+    } else if (gameId === 'algebra-quest') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>Solve algebraic equations of increasing difficulty</li>
+            <li>Each correct answer earns points based on difficulty level</li>
+            <li>Use hints wisely as they are limited</li>
+            <li>Complete as many problems as possible before the timer ends</li>
+            <li>Advance your mathematical skills with interactive feedback</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'number-ninja') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('number_ninja.rule_1', 'Solve math problems quickly to earn points')}</li>
+            <li>{t('number_ninja.rule_2', 'Choose the correct answer from four options')}</li>
+            <li>{t('number_ninja.rule_3', 'The faster you answer, the more points you earn')}</li>
+            <li>{t('number_ninja.rule_4', 'Build up a streak of correct answers for bonus points')}</li>
+            <li>{t('number_ninja.rule_5', 'Complete all problems in each level before time runs out')}</li>
+            <li>{t('number_ninja.rule_6', 'Difficulty increases with each level')}</li>
+          </ul>
+        </div>
+      );  
     } else if (gameId === 'spatial-memory') {
       return (
         <div className="game-description">
@@ -339,26 +659,191 @@ const GameDetailPage: React.FC = () => {
         <div className="game-description">
           <h3>{t('rules')}:</h3>
           <ul>
-            <li>{t('Follow the instructions at the top of the screen')}</li>
-            <li>{t('Click on the target items that match the instructions')}</li>
-            <li>{t('Avoid clicking on distractions or incorrect items')}</li>
-            <li>{t('Earn points for each correct click')}</li>
-            <li>{t('Lose points for missed targets or incorrect clicks')}</li>
+            <li>{t('attention_zone_rule_1', 'During the memorize phase, several squares will be highlighted for a short time.')}</li>
+            <li>{t('attention_zone_rule_2', 'Remember the position of these highlighted squares carefully.')}</li>
+            <li>{t('attention_zone_rule_3', 'After the highlighted squares disappear, click on all the positions where you saw them.')}</li>
+            <li>{t('attention_zone_rule_4', 'Earn 10 points for each correct selection and lose 5 points for incorrect selections.')}</li>
+            <li>{t('attention_zone_rule_5', 'The game becomes progressively more challenging with more squares to remember.')}</li>
+            <li>{t('attention_zone_rule_6', 'Complete all rounds to earn the highest score possible!')}</li>
           </ul>
+          <p className="mt-3 text-gray-700 dark:text-gray-300">
+            {t('attention_zone_tips', 'Tips: Try to create mental patterns or groups to remember more squares. Focus on the center first, then the edges.')}
+          </p>
         </div>
       );
-    } else if (gameId === 'concentration-master') {
+    } else if (gameId === 'focus-reflex') {
       return (
         <div className="game-description">
           <h3>{t('rules')}:</h3>
           <ul>
-            <li>屏幕上会出现不同形状和颜色的目标</li>
-            <li>关注顶部指示的目标类型（形状和颜色）</li>
-            <li>只点击与指示匹配的目标，避免点击其他目标</li>
-            <li>连续点击正确目标可获得连击奖</li>
-            <li>点击错误目标或错过正确目标将扣分并重置连</li>
-            <li>在时间结束前获取尽可能高的分</li>
+            <li>{t('focus_reflex.rule_1', 'Watch for the target shape and color shown at the top of the game area.')}</li>
+            <li>{t('focus_reflex.rule_2', 'Click ONLY on targets that match both the shape and color of the target indicator.')}</li>
+            <li>{t('focus_reflex.rule_3', 'Avoid clicking on distractions (targets that match only in shape or only in color).')}</li>
+            <li>{t('focus_reflex.rule_4', 'Build a combo by clicking on consecutive correct targets to earn bonus points.')}</li>
+            <li>{t('focus_reflex.rule_5', 'Targets will automatically disappear after a short time - be quick!')}</li>
+            <li>{t('focus_reflex.rule_6', 'Try to maintain high accuracy while building your score before time runs out.')}</li>
           </ul>
+          <p className="mt-3 text-gray-700 dark:text-gray-300">
+            {t('focus_reflex.tips', 'Tips: Focus on the center of the game area and scan outward. Pay close attention to both shape AND color to avoid distractions.')}
+          </p>
+        </div>
+      );
+    } else if (gameId === 'logic-grid') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('logic_grid.rule_1', 'Solve logic puzzles by deducing the correct relationships between different elements')}</li>
+            <li>{t('logic_grid.rule_2', 'Use the clues provided to fill in the grid with X marks (not possible) and checkmarks (correct match)')}</li>
+            <li>{t('logic_grid.rule_3', 'Each element from one category can only match with one element from each other category')}</li>
+            <li>{t('logic_grid.rule_4', 'Use process of elimination and logical deduction to find all correct relationships')}</li>
+            <li>{t('logic_grid.rule_5', 'Complete the grid within the time limit to earn maximum points')}</li>
+            <li>{t('logic_grid.rule_6', 'Earn bonus points for completing without using hints and finishing quickly')}</li>
+          </ul>
+          <p className="mt-3 text-gray-700 dark:text-gray-300">
+            {t('logic_grid.tips', 'Tips: Always start with the most restrictive clues. When you mark a relationship as impossible or confirmed, check if this creates new deductions elsewhere in the grid.')}
+          </p>
+        </div>
+      );
+    } else if (gameId === 'pattern-solver') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>Identify the pattern in each sequence and select the correct next value</li>
+            <li>Patterns can be arithmetic, geometric, or based on other mathematical relations</li>
+            <li>Earn points for correct answers and advance through increasingly difficult levels</li>
+            <li>Use hints wisely as they are limited based on difficulty</li>
+            <li>Complete as many patterns as possible before time runs out</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'syllogism-challenge') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>Each problem presents logical premises that you must analyze carefully</li>
+            <li>Select the conclusion that logically follows from the given premises</li>
+            <li>Earn points for correct answers and lose points for incorrect ones</li>
+            <li>Use hints wisely as they are limited based on difficulty level</li>
+            <li>Complete all problems before the time runs out to maximize your score</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'brain-puzzle-master') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>Challenge yourself with a variety of puzzle types: pattern recognition, mathematical, verbal, and visual</li>
+            <li>Select the correct answer from multiple options for each puzzle</li>
+            <li>Earn points for correct answers and lose points for incorrect ones</li>
+            <li>Use hints when you're stuck (limited based on difficulty level)</li>
+            <li>Complete all puzzles before the time runs out to maximize your score</li>
+            <li>Pause the game at any time if you need a break</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'connection-paths') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('connection_paths_rule_1', 'Connect each pair of colored endpoints with a continuous path.')}</li>
+            <li>{t('connection_paths_rule_2', 'Paths cannot cross each other or go through restricted cells (red blocks).')}</li>
+            <li>{t('connection_paths_rule_3', 'Each path must follow a straight line horizontally or vertically between grid cells.')}</li>
+            <li>{t('connection_paths_rule_4', 'Click on a colored endpoint to start drawing a path, then click on adjacent cells to continue the path.')}</li>
+            <li>{t('connection_paths_rule_5', 'Complete all levels before time runs out to maximize your score.')}</li>
+            <li>{t('connection_paths_rule_6', 'Use hints wisely - they reveal one correct step of a random path.')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'synonym-match') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('synonym_match.rule_1', 'Select words that are synonyms (have similar meanings) to the displayed word')}</li>
+            <li>{t('synonym_match.rule_2', 'Each correct answer earns points based on your current streak and time remaining')}</li>
+            <li>{t('synonym_match.rule_3', 'Maintain a streak of correct answers for bonus points')}</li>
+            <li>{t('synonym_match.rule_4', 'Use hints wisely as they are limited based on difficulty level')}</li>
+            <li>{t('synonym_match.rule_5', 'Complete all words in each level before time runs out')}</li>
+            <li>{t('synonym_match.rule_6', 'Progress through multiple levels of increasing difficulty')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'word-connections') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('word_connections.rule_1', 'Find and connect words that belong to the same category')}</li>
+            <li>{t('word_connections.rule_2', 'Select two words from the same category to create a match')}</li>
+            <li>{t('word_connections.rule_3', 'Complete all categories in each level to advance')}</li>
+            <li>{t('word_connections.rule_4', 'Earn points for each matched category and bonus points for remaining time')}</li>
+            <li>{t('word_connections.rule_5', 'Use hints when you\'re stuck to help find matching words')}</li>
+            <li>{t('word_connections.rule_6', 'Complete as many levels as possible before time runs out')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'grammar-guardian') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('grammar_guardian.rule_1', 'Find grammar errors in sentences by clicking on the incorrect word')}</li>
+            <li>{t('grammar_guardian.rule_2', 'Understand the explanation provided for each grammar error')}</li>
+            <li>{t('grammar_guardian.rule_3', 'Earn points based on your speed, accuracy, and streak of correct answers')}</li>
+            <li>{t('grammar_guardian.rule_4', 'Use hints when needed to highlight the incorrect word in a sentence')}</li>
+            <li>{t('grammar_guardian.rule_5', 'Complete all sentences in each level before time runs out')}</li>
+            <li>{t('grammar_guardian.rule_6', 'Progress through multiple levels with increasingly challenging grammar errors')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'word-duel') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('word_duel.rule_1', 'Guess the hidden word in a limited number of attempts')}</li>
+            <li>{t('word_duel.rule_2', 'Each guess provides feedback - green for correct letters in the right position, yellow for correct letters in the wrong position')}</li>
+            <li>{t('word_duel.rule_3', 'Solve as many words as you can to increase your level and score')}</li>
+            <li>{t('word_duel.rule_4', 'Build a streak of correct answers for bonus points')}</li>
+            <li>{t('word_duel.rule_5', 'Track your progress with the on-screen keyboard that shows used letters')}</li>
+            <li>{t('word_duel.rule_6', 'Complete each word before the timer runs out')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'pattern-recognition') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('pattern_recognition.rule_1', 'Identify what comes next in a sequence of patterns')}</li>
+            <li>{t('pattern_recognition.rule_2', 'Choose from multiple options to complete each pattern')}</li>
+            <li>{t('pattern_recognition.rule_3', 'Patterns include shapes, colors, numbers, or combinations')}</li>
+            <li>{t('pattern_recognition.rule_4', 'Earn points based on your speed, accuracy, and streak')}</li>
+            <li>{t('pattern_recognition.rule_5', 'Complete patterns to advance through levels of increasing difficulty')}</li>
+            <li>{t('pattern_recognition.rule_6', 'Answer quickly to maximize your time bonus points')}</li>
+          </ul>
+        </div>
+      );
+    } else if (gameId === 'focus-master') {
+      return (
+        <div className="game-description">
+          <h3>{t('rules')}:</h3>
+          <ul>
+            <li>{t('focus_master.rule_1', 'Click on purple targets while avoiding red distractors')}</li>
+            <li>{t('focus_master.rule_2', 'React quickly - targets will disappear after a short time')}</li>
+            <li>{t('focus_master.rule_3', 'Build combos by hitting consecutive targets for bonus points')}</li>
+            <li>{t('focus_master.rule_4', 'Hitting red distractors will reset your combo')}</li>
+            <li>{t('focus_master.rule_5', 'Smaller targets are worth more points')}</li>
+            <li>{t('focus_master.rule_6', 'Maintain consistent accuracy to maximize your focus time score')}</li>
+          </ul>
+          <p className="mt-3 text-gray-700 dark:text-gray-300">
+            {t('focus_master.tips', 'Tips: Keep your eyes on the center of the game area and scan outward. Stay calm and maintain a rhythm to build your focus streak.')}
+          </p>
         </div>
       );
     }
@@ -367,103 +852,136 @@ const GameDetailPage: React.FC = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8">
-        {!isPlaying ? (
-          <>
-            <div className="mb-8 flex flex-col md:flex-row gap-8">
-              <div className="w-full md:w-1/3">
-                <img 
-                  src={game.thumbnailUrl} 
-                  alt={game.title} 
-                  className="w-full h-auto rounded-xl shadow-lg"
-                />
-                <div className="mt-4 flex justify-between">
-                  <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
-                    {t(game.category)}
-                  </span>
-                  <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900 dark:text-amber-200">
-                    {t(game.difficulty)}
-                  </span>
-                </div>
-                <div className="mt-4">
-                  <button
-                    onClick={() => setIsPlaying(true)}
-                    className="w-full rounded-lg bg-green-600 py-4 text-center text-lg font-bold text-white shadow-lg hover:bg-green-700 transition-colors transform hover:scale-105 animate-pulse hover:animate-none border-2 border-green-400 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-800 dark:border-green-600 dark:focus:ring-green-800 dark:text-gray-100"
-                  >
-                    {t('play_now')} <span className="ml-2"></span>
-                  </button>
-                  <p className="text-center text-sm text-green-600 mt-2 font-medium dark:text-green-400">
-                    {t('click_to_start')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-full md:w-2/3 space-y-6">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    {t(game.title)}
-                  </h1>
-                  <div className="flex items-center mb-4 flex-wrap gap-x-4 gap-y-2">
-                    <div className="flex items-center">
-                      <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      <span className="ml-1 text-gray-700 dark:text-gray-300">{game.rating}/5.0</span>
-                    </div>
-                    {game.playCount && (
-                      <div className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                        </svg>
-                        <span className="ml-1 text-gray-700 dark:text-gray-300">{game.playCount.toLocaleString()} {t('plays')}</span>
-                      </div>
-                    )}
-                    <button 
-                      onClick={openShareModal}
-                      className="flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+      {game && (
+        <Helmet>
+          <title>{game.title} | BrainWeb - Brain Training Games</title>
+          <meta name="description" content={`Play ${game.title} - ${game.description}`} />
+          <meta name="keywords" content={`brain games, ${game.title.toLowerCase()}, cognitive training, ${game.category.toLowerCase()}`} />
+          <meta property="og:title" content={`${game.title} | BrainWeb`} />
+          <meta property="og:description" content={game.description} />
+          <meta property="og:image" content={game.thumbnailUrl} />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={`${game.title} | BrainWeb`} />
+          <meta name="twitter:description" content={game.description} />
+          <meta name="twitter:image" content={game.thumbnailUrl} />
+          <link rel="canonical" href={`https://brainweb.example.com/games/${gameId}`} />
+        </Helmet>
+      )}
+      <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-4">
+          {!isPlaying ? (
+            <>
+              <div className="mb-6 flex flex-col md:flex-row gap-6">
+                <div className="w-full md:w-1/3">
+                  <img 
+                    src={game.thumbnailUrl} 
+                    alt={game.title} 
+                    className="w-full h-auto rounded-xl shadow-lg shadow-black/50 transition-transform hover:scale-[1.02] duration-300"
+                  />
+                  <div className="mt-4 flex justify-between">
+                    <span className="inline-flex items-center rounded-full bg-indigo-900/70 px-3 py-1 text-sm font-medium text-indigo-200 shadow-sm">
+                      {t(game.category)}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-amber-900/70 px-3 py-1 text-sm font-medium text-amber-200 shadow-sm">
+                      {t(game.difficulty)}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      onClick={() => setIsPlaying(true)}
+                      className="w-full rounded-lg bg-gradient-to-br from-indigo-600 to-indigo-700 py-3 text-center text-lg font-bold text-white shadow-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-[1.03] hover:shadow-xl border border-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/30"
                     >
-                      <ShareIcon className="w-4 h-4 mr-1" />
-                      {t('share')}
+                      {t('play_now')} <span className="ml-2">▶</span>
                     </button>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {t(game.description)}
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">{t('how_to_play')}</h2>
-                  <div className="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-400">
-                    {game.howToPlay ? (
-                      <p>{t(game.howToPlay)}</p>
-                    ) : renderGameDescription() ? (
-                       renderGameDescription()
-                    ) : (
-                      <p>{t('game_instructions_placeholder', { title: t(game.title) })}</p>
-                    )}
+                    <p className="text-center text-sm text-indigo-400 mt-2 font-medium">
+                      {t('click_to_start')}
+                    </p>
                   </div>
                 </div>
 
-                <div>
-                  <GameReviews gameId={game.id} />
+                <div className="w-full md:w-2/3 space-y-5">
+                  <div>
+                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
+                      {t(game.title)}
+                    </h1>
+                    <div className="flex items-center mb-3 flex-wrap gap-x-5 gap-y-2">
+                      <div className="flex items-center bg-yellow-900/20 px-3 py-1 rounded-md">
+                        <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <span className="ml-1 text-gray-300 font-medium">{game.rating}/5.0</span>
+                      </div>
+                      {game.playCount && (
+                        <div className="flex items-center bg-blue-900/20 px-3 py-1 rounded-md">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                          </svg>
+                          <span className="ml-1 text-gray-300 font-medium">{game.playCount.toLocaleString()} {t('plays')}</span>
+                        </div>
+                      )}
+                      <button 
+                        onClick={openShareModal}
+                        className="flex items-center text-sm text-blue-400 hover:text-blue-300 transition-colors bg-blue-900/20 px-3 py-1 rounded-md hover:bg-blue-800/30"
+                      >
+                        <ShareIcon className="w-4 h-4 mr-1" />
+                        {t('share')}
+                      </button>
+                    </div>
+                    <p className="text-gray-300 text-lg leading-relaxed">
+                      {t(game.description)}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-800/50 p-5 rounded-xl shadow-sm shadow-black/30 border border-gray-700">
+                    <h2 className="text-2xl font-semibold text-white mb-3">{t('how_to_play')}</h2>
+                    <div className="prose prose-sm prose-invert max-w-none text-gray-300">
+                      {game.howToPlay ? (
+                        <p>{t(game.howToPlay)}</p>
+                      ) : renderGameDescription() ? (
+                         renderGameDescription()
+                      ) : (
+                        <p>{t('game_instructions_placeholder', { title: t(game.title) })}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-800/50 p-5 rounded-xl shadow-sm shadow-black/30 border border-gray-700">
+                    <GameReviews gameId={game.id} />
+                  </div>
                 </div>
               </div>
+              
+              {/* 相关游戏部分 */}
+              {relatedGames.length > 0 && (
+                <div className="mt-10 mb-8">
+                  <h2 className="mb-4 text-2xl font-bold text-white flex items-center">
+                    <span className="mr-2 bg-indigo-700 w-1 h-6 rounded-full inline-block"></span>
+                    {t('related_games')}
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {relatedGames.map(relatedGame => (
+                      <RelatedGameCard key={relatedGame.id} game={relatedGame} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className={`game-container relative ${gameId === 'syllogism-challenge' ? 'bg-black' : ''}`}>
+              {renderGame()}
             </div>
-          </>
-        ) : (
-          <div className="game-container relative">
-            {renderGame()}
-          </div>
+          )}
+        </div>
+
+        {isShareModalOpen && game && (
+          <ShareModal 
+            gameTitle={t(game.title)} 
+            gameUrl={gameUrl} 
+            onClose={closeShareModal} 
+          />
         )}
       </div>
-
-      {isShareModalOpen && game && (
-        <ShareModal 
-          gameTitle={t(game.title)} 
-          gameUrl={gameUrl} 
-          onClose={closeShareModal} 
-        />
-      )}
     </>
   );
 };

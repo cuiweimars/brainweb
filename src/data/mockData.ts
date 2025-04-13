@@ -10,6 +10,18 @@
 // 导入图片路径
 import memoryMatchImg from '../images/memory-training/memory-match.jpg';
 import focusMasterImg from '../images/focus-training/focus-master.jpg';
+import focusReflexImg from '../images/focus-training/focus-reflex.jpg';
+import wordWizardImg from '../images/focus-training/word-wizard.jpg';
+import logicGridImg from '../images/focus-training/logic-grid.jpg';
+import patternSolverImg from '../images/logic-puzzles/pattern-solver.jpg';
+import syllogismChallengeImg from '../images/logic-puzzles/syllogism-challenge.jpg';
+import arithmeticAdventureImg from '../images/math-challenges/arithmetic-adventure.jpg';
+
+import numberNinjaImg from '../images/math-challenges/number-ninja.jpg';
+import algebraQuestImg from '../images/math-challenges/algebra-quest.jpg';
+import mathRaceImg from '../images/math-challenges/math-race.jpg';
+import synonymMatchImg from '../images/language-skills/synonym-match.jpg';
+import grammarGuardianImg from '../images/language-skills/grammar-guardian.jpg';
 
 import brainPuzzleImg from '../images/logic-puzzles/brain-puzzle-master.jpg';
 import mathChallengeImg from '../images/math-challenges/math-challenge.jpg';
@@ -19,9 +31,8 @@ import pictureMemoryImg from '../images/memory-training/picture-memory.jpg';
 import memoryPathImg from '../images/memory-training/memory-path.jpg';
 import defaultGameImg from '../images/default-game.jpg';
 import wordScrambleImg from '../assets/images/word-scramble.jpg';
-import attentionTestImg from '../assets/images/attention-test.jpg';
-import patternRecognitionImg from '../assets/images/pattern-recognition.jpg';
-import logicPuzzleImg from '../assets/images/logic-puzzle.jpg';
+import patternRecognitionImg from '../images/focus-training/pattern-recognition.jpg';
+import logicPuzzleImg from '../images/logic-puzzles/brain-puzzle-master.jpg';
 import spatialMemoryImg from '../images/memory-training/spatial-memory.jpg';
 
 export interface Game {
@@ -47,7 +58,38 @@ export interface Category {
   count: number;
 }
 
-export const categories: Category[] = [ { id: 'MemoryTraining', name: 'Memory Training', icon: '', count: 12 + memoryHtmlGames.length }, { id: 'focus-training', name: 'Focus Training', icon: '', count: 8 + focusHtmlGames.length }, { id: 'logic-puzzles', name: 'Logic Puzzles', icon: '', count: 15 + logicHtmlGames.length }, { id: 'math-challenges', name: 'Math Challenges', icon: '', count: 10 + mathHtmlGames.length }, { id: 'language-skills', name: 'Language Skills', icon: '', count: 7 + languageHtmlGames.length } ];
+export const categories: Category[] = [ 
+  { 
+    id: 'MemoryTraining', 
+    name: 'Memory Training', 
+    icon: '🧠', 
+    count: 5 
+  }, 
+  { 
+    id: 'focus-training', 
+    name: 'Focus Training', 
+    icon: '👁️', 
+    count: 4 + focusHtmlGames.length 
+  }, 
+  { 
+    id: 'logic-puzzles', 
+    name: 'Logic Puzzles', 
+    icon: '🧩', 
+    count: 7 + logicHtmlGames.length 
+  }, 
+  { 
+    id: 'math-challenges', 
+    name: 'Math Challenges', 
+    icon: '🔢', 
+    count: 5 + mathHtmlGames.length 
+  }, 
+  { 
+    id: 'language-skills', 
+    name: 'Language Skills', 
+    icon: '🔤', 
+    count: 5 + languageHtmlGames.length 
+  } 
+];
 
 
 export const featuredGames: Game[] = [
@@ -64,11 +106,14 @@ export const featuredGames: Game[] = [
   {
     id: 'math-challenge',
     title: 'Math Challenge Elite',
-    description: 'Master numerical skills with dynamic math challenges. Features adaptive difficulty and real-time performance tracking.',
+    description: 'Enhance your calculation abilities through engaging math challenges. The game includes various operations (addition, subtraction, multiplication, division) with difficulty levels ranging from easy to hard, dynamically adjusting to your skill level. Track your performance in real-time with intuitive feedback to help you continuously improve.',
     thumbnailUrl: mathChallengeImg,
     category: 'math-challenges',
-    difficulty: 'hard',
-    rating: 4.5,
+    difficulty: 'medium',
+    rating: 4.7,
+    playCount: 8562,
+    duration: '5-10 min',
+    howToPlay: 'math_challenge_instructions'
   },
   {
     id: 'word-connections',
@@ -78,15 +123,6 @@ export const featuredGames: Game[] = [
     category: 'language-skills',
     difficulty: 'easy',
     rating: 4.2,
-  },
-  {
-    id: 'attention-test',
-    title: 'Focus Master',
-    description: 'Train your concentration with scientifically-designed attention exercises. Track your progress and improve focus.',
-    thumbnailUrl: focusMasterImg,
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.8,
   },
 ];
 
@@ -103,136 +139,64 @@ export const gameOfTheDay: Game = {
 
 export const newGames: Game[] = [
   {
-    id: 'logic-puzzle',
-    title: 'Logic Puzzle Pro',
-    description: 'Challenge your critical thinking with sophisticated puzzle challenges. Features multiple difficulty levels and detailed solutions.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Logic+Puzzle',
-    category: 'logic-puzzles',
-    difficulty: 'hard',
-    rating: 4.3,
+    id: 'focus-master',
+    title: 'Focus Master',
+    description: 'Train your concentration with scientifically-designed attention exercises. Track your progress and improve focus.',
+    thumbnailUrl: focusMasterImg,
+    category: 'focus-training',
+    difficulty: 'medium',
+    rating: 4.8,
     isNew: true,
     duration: '5-10 min',
     createdAt: '2023-04-01T00:00:00.000Z'
   },
   {
-    id: 'pattern-recognition',
-    title: 'Pattern Recognition Plus',
-    description: 'Train your brain to identify and complete complex visual patterns. Perfect for improving spatial awareness and pattern recognition skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Pattern+Recognition',
+    id: 'focus-reflex',
+    title: 'Focus Reflex',
+    description: 'Improve your reaction time and attention with rapid stimulus-response exercises and challenges.',
+    thumbnailUrl: focusReflexImg,
     category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.6,
+    difficulty: 'easy',
+    rating: 4.4,
     isNew: true,
     duration: '3-7 min',
     createdAt: '2023-04-05T00:00:00.000Z'
   },
   {
-    id: 'speed-calculation',
-    title: 'Speed Calculation Elite',
-    description: 'Boost your mental arithmetic skills with timed mathematical challenges. Features progressive difficulty and performance analytics.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Speed+Calculation',
-    category: 'math-challenges',
+    id: 'pattern-recognition',
+    title: 'Pattern Recognition Plus',
+    description: 'Train your brain to identify and complete complex visual patterns. Perfect for improving spatial awareness and pattern recognition skills.',
+    thumbnailUrl: patternRecognitionImg,
+    category: 'focus-training',
     difficulty: 'medium',
-    rating: 4.4,
+    rating: 4.6,
     isNew: true,
-    duration: '2-5 min',
+    duration: '5-8 min',
     createdAt: '2023-04-10T00:00:00.000Z'
   },
   {
-    id: 'vocabulary-builder',
-    title: 'Vocabulary Builder Pro',
-    description: 'Enhance your language skills through engaging word association games. Features comprehensive word lists and learning progress tracking.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Vocabulary+Builder',
-    category: 'language-skills',
-    difficulty: 'easy',
-    rating: 4.1,
+    id: 'syllogism-challenge',
+    title: 'Syllogism Challenge',
+    description: 'Test and improve your logical reasoning skills with challenging syllogisms and deductive reasoning puzzles.',
+    thumbnailUrl: brainPuzzleImg,
+    category: 'logic-puzzles',
+    difficulty: 'hard',
+    rating: 4.5,
     isNew: true,
-    duration: '4-8 min',
+    duration: '8-12 min',
     createdAt: '2023-04-15T00:00:00.000Z'
   },
   {
-    id: 'memory-matrix',
-    title: 'Memory Matrix 3D',
-    description: 'Challenge your spatial memory with this innovative 3D memory game. Remember patterns and sequences in three-dimensional space.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Memory+Matrix',
-    category: 'MemoryTraining',
-    difficulty: 'hard',
-    rating: 4.7,
-    isNew: true,
-    duration: '5-12 min',
-    createdAt: '2023-04-20T00:00:00.000Z'
-  },
-  {
-    id: 'focus-trainer',
-    title: 'Advanced Focus Trainer',
-    description: 'Train your concentration with increasing difficulty levels. Track progress and compete with friends to improve attention span.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Focus+Trainer',
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.5,
-    isNew: true,
-    duration: '10-15 min',
-    createdAt: '2023-04-25T00:00:00.000Z'
-  },
-  {
-    id: 'logic-grid',
-    title: 'Logic Grid Puzzles',
-    description: 'Solve complex logic grid puzzles that require deductive reasoning. Perfect for improving logical thinking and problem-solving skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Logic+Grid',
-    category: 'logic-puzzles',
-    difficulty: 'hard',
-    rating: 4.8,
-    isNew: true,
-    duration: '15-20 min',
-    createdAt: '2023-05-01T00:00:00.000Z'
-  },
-  {
-    id: 'math-genius',
-    title: 'Math Genius Trainer',
-    description: 'Enhance your mathematical abilities with advanced arithmetic and algebraic challenges. Features customizable difficulty levels.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Math+Genius',
+    id: 'algebra-quest',
+    title: 'Algebra Quest',
+    description: 'Master algebraic concepts through engaging and challenging puzzles of increasing difficulty.',
+    thumbnailUrl: mathChallengeImg,
     category: 'math-challenges',
-    difficulty: 'hard',
-    rating: 4.6,
+    difficulty: 'medium',
+    rating: 4.3,
     isNew: true,
     duration: '5-15 min',
-    createdAt: '2023-05-05T00:00:00.000Z'
-  },
-  {
-    id: 'word-chains',
-    title: 'Word Chains Challenge',
-    description: 'Build vocabulary with word association chains. Connect words based on relationships and expand your language skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Word+Chains',
-    category: 'language-skills',
-    difficulty: 'medium',
-    rating: 4.4,
-    isNew: true,
-    duration: '3-8 min',
-    createdAt: '2023-05-10T00:00:00.000Z'
-  },
-  {
-    id: 'neuro-booster',
-    title: 'Neuro Booster',
-    description: 'A comprehensive brain training suite that combines multiple cognitive exercises into one progressive program.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Neuro+Booster',
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.9,
-    isNew: true,
-    duration: '10-20 min',
-    createdAt: '2023-05-15T00:00:00.000Z'
-  },
-  {
-    id: 'concentration-master',
-    title: 'Concentration Master',
-    description: '训练你的选择性注意力和反应速度。通过选择性地点击指定目标，同时忽略干扰项来提高专注力和反应能力',
-    thumbnailUrl: focusMasterImg,
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.6,
-    isNew: true,
-    duration: '3-5 min',
-    createdAt: new Date().toISOString()
+    createdAt: '2023-04-20T00:00:00.000Z'
   },
 ];
 
@@ -329,26 +293,6 @@ export const originalGames: Game[] = [
 
 export const multiplayerGames: Game[] = [
   {
-    id: 'word-duel',
-    title: 'Word Duel',
-    description: 'Challenge friends to intense vocabulary battles. Features multiple game modes and real-time competition.',
-    thumbnailUrl: wordConnectionsImg,
-    category: 'language-skills',
-    difficulty: 'medium',
-    rating: 4.6,
-    isOnline: true,
-  },
-  {
-    id: 'math-race',
-    title: 'Math Race',
-    description: 'Compete in fast-paced mathematical challenges. Solve equations quickly and climb the global rankings.',
-    thumbnailUrl: mathChallengeImg,
-    category: 'math-challenges',
-    difficulty: 'medium',
-    rating: 4.5,
-    isOnline: true,
-  },
-  {
     id: 'memory-match-battle',
     title: 'Memory Match Battle',
     description: 'Test your memory against friends in this exciting multiplayer card game. Perfect for local multiplayer fun.',
@@ -359,15 +303,15 @@ export const multiplayerGames: Game[] = [
     isOnline: false,
   },
   {
-    id: 'puzzle-challenge',
-    title: 'Puzzle Challenge Network',
-    description: 'Connect with puzzle enthusiasts worldwide and compete in various logic challenges. Features daily tournaments and custom puzzles.',
-    thumbnailUrl: brainPuzzleImg,
-    category: 'logic-puzzles',
-    difficulty: 'hard',
-    rating: 4.7,
+    id: 'word-duel',
+    title: 'Word Duel',
+    description: 'Challenge friends to intense vocabulary battles. Features multiple game modes and real-time competition.',
+    thumbnailUrl: wordConnectionsImg,
+    category: 'language-skills',
+    difficulty: 'medium',
+    rating: 4.6,
     isOnline: true,
-  },
+  }
 ];
 
 export const recentlyPlayedGames: Game[] = [
@@ -382,16 +326,6 @@ export const recentlyPlayedGames: Game[] = [
     playCount: 12,
   },
   {
-    id: 'brain-puzzle-master',
-    title: 'Brain Puzzle Master',
-    description: 'Experience the ultimate brain training challenge. This comprehensive game combines memory, attention, logic, and math exercises in an engaging package.',
-    thumbnailUrl: brainPuzzleImg,
-    category: 'logic-puzzles',
-    difficulty: 'medium',
-    rating: 4.9,
-    playCount: 8,
-  },
-  {
     id: 'focus-master',
     title: 'Focus Master',
     description: 'Train your concentration with scientifically-designed attention exercises. Track your progress and improve focus.',
@@ -402,14 +336,24 @@ export const recentlyPlayedGames: Game[] = [
     playCount: 15,
   },
   {
-    id: 'math-challenge',
-    title: 'Math Challenge Elite',
-    description: 'Master numerical skills with dynamic math challenges. Features adaptive difficulty and real-time performance tracking.',
-    thumbnailUrl: mathChallengeImg,
-    category: 'math-challenges',
-    difficulty: 'hard',
-    rating: 4.5,
-    playCount: 7,
+    id: 'sequence-recall',
+    title: 'Sequence Recall',
+    description: 'Test and improve your memory by recalling increasingly complex sequences of colors, numbers, and patterns.',
+    thumbnailUrl: sequenceRecallImg,
+    category: 'MemoryTraining',
+    difficulty: 'medium',
+    rating: 4.4,
+    playCount: 25,
+  },
+  {
+    id: 'pattern-recognition',
+    title: 'Pattern Recognition Plus',
+    description: 'Train your brain to identify and complete complex visual patterns. Perfect for improving spatial awareness and pattern recognition skills.',
+    thumbnailUrl: patternRecognitionImg,
+    category: 'focus-training',
+    difficulty: 'medium',
+    rating: 4.6,
+    playCount: 18,
   },
   {
     id: 'word-connections',
@@ -422,78 +366,28 @@ export const recentlyPlayedGames: Game[] = [
     playCount: 10,
   },
   {
-    id: 'pattern-recognition',
-    title: 'Pattern Recognition Plus',
-    description: 'Train your brain to identify and complete complex visual patterns. Perfect for improving spatial awareness and pattern recognition skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Pattern+Recognition',
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.6,
-    playCount: 5,
-  },
-  {
-    id: 'memory-match-battle',
-    title: 'Memory Match Battle',
-    description: 'Test your memory against friends in this exciting multiplayer card game. Perfect for local multiplayer fun.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Memory+Match+Battle',
-    category: 'MemoryTraining',
-    difficulty: 'easy',
-    rating: 4.3,
-    playCount: 3,
-  },
-  {
-    id: 'logic-puzzle',
-    title: 'Logic Puzzle Pro',
-    description: 'Challenge your critical thinking with sophisticated puzzle challenges. Features multiple difficulty levels and detailed solutions.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Logic+Puzzle',
-    category: 'logic-puzzles',
-    difficulty: 'hard',
-    rating: 4.3,
-    playCount: 6,
-  },
-  {
-    id: 'vocabulary-builder',
-    title: 'Vocabulary Builder Pro',
-    description: 'Enhance your language skills through engaging word association games. Features comprehensive word lists and learning progress tracking.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Vocabulary+Builder',
-    category: 'language-skills',
-    difficulty: 'easy',
-    rating: 4.1,
-    playCount: 9,
-  },
-  {
-    id: 'speed-calculation',
-    title: 'Speed Calculation Elite',
-    description: 'Boost your mental arithmetic skills with timed mathematical challenges. Features progressive difficulty and performance analytics.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Speed+Calculation',
+    id: 'math-challenge',
+    title: 'Math Challenge Elite',
+    description: 'Enhance your calculation abilities through engaging math challenges. The game includes various operations (addition, subtraction, multiplication, division) with difficulty levels ranging from easy to hard, dynamically adjusting to your skill level. Track your performance in real-time with intuitive feedback to help you continuously improve.',
+    thumbnailUrl: mathChallengeImg,
     category: 'math-challenges',
     difficulty: 'medium',
-    rating: 4.4,
-    playCount: 4,
-  }
+    rating: 4.7,
+    playCount: 14,
+  },
+  {
+    id: 'spatial-memory',
+    title: 'Spatial Memory Challenge',
+    description: 'Train your spatial memory by remembering the position of objects in increasingly complex arrangements.',
+    thumbnailUrl: pictureMemoryImg,
+    category: 'MemoryTraining',
+    difficulty: 'hard',
+    rating: 4.7,
+    playCount: 9,
+  },
 ];
 
 export const trendingGames: Game[] = [
-  {
-    id: 'focus-master',
-    title: 'Focus Master',
-    description: 'Train your concentration with scientifically-designed attention exercises. Track your progress and improve focus.',
-    thumbnailUrl: focusMasterImg,
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.8,
-    playCount: 15784,
-  },
-  {
-    id: 'brain-puzzle-master',
-    title: 'Brain Puzzle Master',
-    description: 'Experience the ultimate brain training challenge. This comprehensive game combines memory, attention, logic, and math exercises in an engaging package.',
-    thumbnailUrl: brainPuzzleImg,
-    category: 'logic-puzzles',
-    difficulty: 'medium',
-    rating: 4.9,
-    playCount: 12548,
-  },
   {
     id: 'memory-match',
     title: 'Memory Match Pro',
@@ -515,64 +409,84 @@ export const trendingGames: Game[] = [
     playCount: 9721,
   },
   {
+    id: 'sequence-recall',
+    title: 'Sequence Recall',
+    description: 'Test and improve your memory by recalling increasingly complex sequences of colors, numbers, and patterns.',
+    thumbnailUrl: sequenceRecallImg,
+    category: 'MemoryTraining',
+    difficulty: 'medium',
+    rating: 4.4,
+    playCount: 8934,
+  },
+  {
     id: 'math-challenge',
     title: 'Math Challenge Elite',
-    description: 'Master numerical skills with dynamic math challenges. Features adaptive difficulty and real-time performance tracking.',
+    description: 'Enhance your calculation abilities through engaging math challenges. The game includes various operations (addition, subtraction, multiplication, division) with difficulty levels ranging from easy to hard, dynamically adjusting to your skill level. Track your performance in real-time with intuitive feedback to help you continuously improve.',
     thumbnailUrl: mathChallengeImg,
     category: 'math-challenges',
-    difficulty: 'hard',
-    rating: 4.5,
-    playCount: 8654,
+    difficulty: 'medium',
+    rating: 4.7,
+    playCount: 8562,
   },
   {
     id: 'word-duel',
     title: 'Word Duel',
     description: 'Challenge friends to intense vocabulary battles. Features multiple game modes and real-time competition.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Word+Duel',
+    thumbnailUrl: wordConnectionsImg,
     category: 'language-skills',
     difficulty: 'medium',
     rating: 4.6,
     playCount: 7842,
   },
   {
-    id: 'logic-puzzle',
-    title: 'Logic Puzzle Pro',
-    description: 'Challenge your critical thinking with sophisticated puzzle challenges. Features multiple difficulty levels and detailed solutions.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Logic+Puzzle',
-    category: 'logic-puzzles',
-    difficulty: 'hard',
-    rating: 4.3,
-    playCount: 7215,
-  },
-  {
     id: 'pattern-recognition',
     title: 'Pattern Recognition Plus',
     description: 'Train your brain to identify and complete complex visual patterns. Perfect for improving spatial awareness and pattern recognition skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Pattern+Recognition',
+    thumbnailUrl: patternRecognitionImg,
     category: 'focus-training',
     difficulty: 'medium',
     rating: 4.6,
     playCount: 6543,
   },
   {
-    id: 'vocabulary-builder',
-    title: 'Vocabulary Builder Pro',
-    description: 'Enhance your language skills through engaging word association games. Features comprehensive word lists and learning progress tracking.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Vocabulary+Builder',
-    category: 'language-skills',
+    id: 'focus-master',
+    title: 'Focus Master',
+    description: 'Train your concentration with scientifically-designed attention exercises. Track your progress and improve focus.',
+    thumbnailUrl: focusMasterImg,
+    category: 'focus-training',
+    difficulty: 'medium',
+    rating: 4.8,
+    playCount: 6321,
+  },
+  {
+    id: 'math-challenge',
+    title: 'Math Challenge Master',
+    description: 'Test your math skills with a variety of problems covering addition, subtraction, multiplication, and division, all with varying difficulty levels and time constraints.',
+    thumbnailUrl: mathChallengeImg,
+    category: 'math-challenges',
+    difficulty: 'medium',
+    rating: 4.8,
+    playCount: 6321,
+  },
+  {
+    id: 'arithmetic-adventure',
+    title: 'Arithmetic Adventure',
+    description: 'Embark on a mathematical journey through various arithmetic challenges, improving calculation skills while having fun.',
+    thumbnailUrl: mathChallengeImg,
+    category: 'math-challenges',
     difficulty: 'easy',
-    rating: 4.1,
+    rating: 4.5,
     playCount: 5879,
   },
   {
-    id: 'speed-calculation',
-    title: 'Speed Calculation Elite',
-    description: 'Boost your mental arithmetic skills with timed mathematical challenges. Features progressive difficulty and performance analytics.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Speed+Calculation',
-    category: 'math-challenges',
-    difficulty: 'medium',
-    rating: 4.4,
-    playCount: 5421,
+    id: 'spatial-memory',
+    title: 'Spatial Memory Challenge',
+    description: 'Train your spatial memory by remembering the position of objects in increasingly complex arrangements.',
+    thumbnailUrl: pictureMemoryImg,
+    category: 'MemoryTraining',
+    difficulty: 'hard',
+    rating: 4.7,
+    playCount: 5724,
   }
 ];
 
@@ -623,20 +537,10 @@ export const categoryGames: Game[] = [
     playCount: 5800,
   },
   {
-    id: 'concentration-master',
-    title: 'Concentration Master',
-    description: 'Maintain focus on multiple tasks simultaneously with increasing difficulty levels and time constraints.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Concentration+Master',
-    category: 'focus-training',
-    difficulty: 'medium',
-    rating: 4.3,
-    playCount: 4900,
-  },
-  {
     id: 'focus-reflex',
     title: 'Focus Reflex',
     description: 'Improve your reaction time and attention with rapid stimulus-response exercises and challenges.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Focus+Reflex',
+    thumbnailUrl: focusReflexImg,
     category: 'focus-training',
     difficulty: 'easy',
     rating: 4.4,
@@ -648,7 +552,7 @@ export const categoryGames: Game[] = [
     id: 'logic-grid',
     title: 'Logic Grid Master',
     description: 'Solve complex logic grid puzzles that challenge your deductive reasoning and critical thinking skills.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Logic+Grid',
+    thumbnailUrl: logicGridImg,
     category: 'logic-puzzles',
     difficulty: 'hard',
     rating: 4.7,
@@ -658,7 +562,7 @@ export const categoryGames: Game[] = [
     id: 'pattern-solver',
     title: 'Pattern Solver',
     description: 'Identify and complete complex patterns using logical reasoning and analytical thinking.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Pattern+Solver',
+    thumbnailUrl: patternSolverImg,
     category: 'logic-puzzles',
     difficulty: 'medium',
     rating: 4.5,
@@ -668,7 +572,7 @@ export const categoryGames: Game[] = [
     id: 'syllogism-challenge',
     title: 'Syllogism Challenge',
     description: 'Test your logical reasoning with syllogism puzzles that require careful analysis and deduction.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Syllogism+Challenge',
+    thumbnailUrl: syllogismChallengeImg,
     category: 'logic-puzzles',
     difficulty: 'hard',
     rating: 4.6,
@@ -680,7 +584,7 @@ export const categoryGames: Game[] = [
     id: 'arithmetic-adventure',
     title: 'Arithmetic Adventure',
     description: 'Journey through a world where math puzzles unlock new areas and challenges with progressive difficulty.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Arithmetic+Adventure',
+    thumbnailUrl: arithmeticAdventureImg,
     category: 'math-challenges',
     difficulty: 'medium',
     rating: 4.5,
@@ -690,7 +594,7 @@ export const categoryGames: Game[] = [
     id: 'number-ninja',
     title: 'Number Ninja',
     description: 'Slice through number puzzles with lightning speed in this fast-paced mathematical challenge game.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Number+Ninja',
+    thumbnailUrl: numberNinjaImg,
     category: 'math-challenges',
     difficulty: 'easy',
     rating: 4.7,
@@ -700,7 +604,7 @@ export const categoryGames: Game[] = [
     id: 'algebra-quest',
     title: 'Algebra Quest',
     description: 'Master algebraic concepts through engaging puzzles and challenges designed for all skill levels.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Algebra+Quest',
+    thumbnailUrl: algebraQuestImg,
     category: 'math-challenges',
     difficulty: 'hard',
     rating: 4.4,
@@ -712,7 +616,7 @@ export const categoryGames: Game[] = [
     id: 'word-wizard',
     title: 'Word Wizard',
     description: 'Expand your vocabulary and spelling skills with magical word-building challenges and puzzles.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Word+Wizard',
+    thumbnailUrl: wordWizardImg,
     category: 'language-skills',
     difficulty: 'medium',
     rating: 4.6,
@@ -722,7 +626,7 @@ export const categoryGames: Game[] = [
     id: 'synonym-match',
     title: 'Synonym Match',
     description: 'Test and improve your knowledge of word relationships by matching synonyms in timed challenges.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Synonym+Match',
+    thumbnailUrl: synonymMatchImg,
     category: 'language-skills',
     difficulty: 'medium',
     rating: 4.3,
@@ -732,11 +636,12 @@ export const categoryGames: Game[] = [
     id: 'grammar-guardian',
     title: 'Grammar Guardian',
     description: 'Defend against grammar mistakes and improve your language skills with fun, interactive challenges.',
-    thumbnailUrl: 'https://via.placeholder.com/300x200?text=Grammar+Guardian',
+    thumbnailUrl: grammarGuardianImg,
     category: 'language-skills',
     difficulty: 'hard',
     rating: 4.5,
     playCount: 4700,
+    howToPlay: 'grammar_guardian_instructions'
   }
 ];
 
@@ -758,7 +663,7 @@ const processGameImages = (games: Game[]): Game[] => {
 };
 
 
-// 合并所有游戏并去除重复�?
+// Merge all games and remove duplicates
 const mergeGames = (): Game[] => {
   const allGameArrays = [...categoryGames, ...limitedGames, ...featuredGames, ...trendingGames, ...recentlyPlayedGames, ...multiplayerGames, ...allHtmlGames];
   const uniqueGames: { [key: string]: Game } = {};
@@ -773,8 +678,38 @@ const mergeGames = (): Game[] => {
   return Object.values(uniqueGames);
 };
 
-// 所有游戏导出时先合并去重，再处理图�?
-export const allGames = processGameImages(mergeGames());
+// When exporting all games, first merge and remove duplicates, then process images
+export const allGames: Game[] = processGameImages([
+  ...mergeGames(),
+  // Add Math Race game
+  {
+    id: 'math-race',
+    title: 'Math Race',
+    description: 'Solve math problems quickly and accurately to advance your race car to the finish line. A fun way to improve mental calculation speed.',
+    thumbnailUrl: mathRaceImg,
+    category: 'math-challenges',
+    difficulty: 'medium',
+    rating: 4.7,
+    playCount: 5421,
+    isNew: true,
+    createdAt: '2024-07-01T00:00:00.000Z',
+    howToPlay: 'math_race_instructions'
+  },
+  // Add Word Wizard game
+  {
+    id: 'word-wizard',
+    title: 'Word Wizard',
+    description: 'Expand your vocabulary and spelling skills with magical word-building challenges and puzzles.',
+    thumbnailUrl: wordWizardImg,
+    category: 'language-skills',
+    difficulty: 'medium',
+    rating: 4.6,
+    playCount: 6400,
+    isNew: true,
+    createdAt: '2024-07-05T00:00:00.000Z',
+    howToPlay: 'word_wizard_instructions'
+  }
+]);
 
 // 汇总所有游戏（包括HTML小游戏）
 export const totalGames = allGames.length;

@@ -1,1 +1,22 @@
- 
+{
+  "logic_grid_rule_1": "根据提供的线索解决逻辑网格谜题",
+  "logic_grid_rule_2": "单元格中的标记：✓ 表示正确匹配，✗ 表示不匹配，? 表示可能",
+  "logic_grid_rule_3": "点击网格单元格可循环切换标记：空 -> ✓ -> ✗ -> ? -> 空",
+  "logic_grid_rule_4": "正确填写单元格获得分数，错误填写将扣分",
+  "logic_grid_rule_5": "困难时可使用有限的提示功能",
+  "logic_grid_rule_6": "在时间限制内解决谜题以获得最高分数",
+  "math_challenge_instructions": "通过我们的互动数学挑战游戏测试和提高您的数学技能。选择三种难度级别之一，正确回答问题以获得积分，并尝试在时间结束前完成尽可能多的问题。",
+  "math_challenge.rule_1": "解决各种数学问题并获得分数",
+  "math_challenge.rule_2": "根据难度级别提供不同的运算符和数字范围",
+  "math_challenge.rule_3": "从四个选项中选择正确答案",
+  "math_challenge.rule_4": "答对题目获得10分",
+  "math_challenge.rule_5": "在时间结束前答对尽可能多的题目",
+  "math_challenge.rule_6": "可以随时暂停游戏或调整音效",
+  "speed_calculation_instructions": "用我们的速算挑战游戏挑战您的心算能力。尽可能快地解决算术问题以获得更多分数。回答越快，得分越高！",
+  "speed_calculation.rule_1": "与时间赛跑解决数学问题",
+  "speed_calculation.rule_2": "每个问题都有自己的计时器 - 在时间结束前回答",
+  "speed_calculation.rule_3": "回答越快获得的奖励分数越多",
+  "speed_calculation.rule_4": "不同难度级别提供各种运算符和数字范围",
+  "speed_calculation.rule_5": "连续答对题目可获得最高分数",
+  "speed_calculation.rule_6": "每次游戏都要挑战自己的历史记录"
+} 

@@ -1,0 +1,604 @@
+/* BrainPuzzleMaster.css */
+
+.brain-puzzle-game {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Game screens (intro, gameplay, etc.) */
+.brain-puzzle-intro,
+.brain-puzzle-game-over,
+.brain-puzzle-paused {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  min-height: 500px;
+}
+
+.brain-puzzle-intro-title,
+.brain-puzzle-game-over-title,
+.brain-puzzle-paused-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin-bottom: 20px;
+}
+
+.brain-puzzle-intro-image,
+.brain-puzzle-game-over-image {
+  max-width: 200px;
+  margin-bottom: 24px;
+}
+
+.brain-puzzle-intro-text,
+.brain-puzzle-game-over-text,
+.brain-puzzle-paused-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a5568;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+/* Difficulty selector */
+.brain-puzzle-difficulty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0 30px;
+}
+
+.brain-puzzle-difficulty-button {
+  padding: 10px 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  color: #4b5563;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.brain-puzzle-difficulty-button:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-2px);
+}
+
+.brain-puzzle-difficulty-button.selected {
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+/* Buttons */
+.brain-puzzle-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 5px;
+}
+
+.brain-puzzle-button-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.brain-puzzle-button-primary:hover {
+  background-color: #4338ca;
+}
+
+.brain-puzzle-button-secondary {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.brain-puzzle-button-secondary:hover {
+  background-color: #d1d5db;
+}
+
+.brain-puzzle-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Game header */
+.brain-puzzle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.brain-puzzle-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+.brain-puzzle-info {
+  display: flex;
+  gap: 20px;
+}
+
+.brain-puzzle-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brain-puzzle-stat-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.brain-puzzle-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+/* Game content area */
+.brain-puzzle-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.brain-puzzle-problem {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.brain-puzzle-problem-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #4f46e5;
+}
+
+.brain-puzzle-problem-type {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #eef2ff;
+  color: #4f46e5;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.brain-puzzle-problem-content {
+  margin-bottom: 20px;
+}
+
+.brain-puzzle-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brain-puzzle-option {
+  padding: 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: white;
+  text-align: left;
+  font-size: 16px;
+}
+
+.brain-puzzle-option:hover {
+  border-color: #a5b4fc;
+  background-color: #f5f7ff;
+}
+
+.brain-puzzle-option.selected {
+  border-color: #4f46e5;
+  background-color: #eef2ff;
+}
+
+.brain-puzzle-option.correct {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+}
+
+.brain-puzzle-option.incorrect {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.brain-puzzle-explanation {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fffbeb;
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+}
+
+.brain-puzzle-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.brain-puzzle-timer {
+  width: 100%;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.brain-puzzle-timer-fill {
+  height: 100%;
+  background-color: #4f46e5;
+  transition: width 1s linear;
+}
+
+/* Pattern recognition specific styles */
+.brain-puzzle-pattern {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.brain-puzzle-pattern-item {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #e5e7eb;
+  border-radius: 8px;
+}
+
+.brain-puzzle-pattern-question {
+  background-color: #eef2ff;
+  border: 2px dashed #4f46e5;
+}
+
+/* Math puzzle specific styles */
+.brain-puzzle-math-equation {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Visual puzzle specific styles */
+.brain-puzzle-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto 20px;
+  max-width: 300px;
+}
+
+.brain-puzzle-visual-item {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.brain-puzzle-visual-item.highlight {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.brain-puzzle-visual-item.question {
+  background-color: #eef2ff;
+  border: 2px dashed #4f46e5;
+  font-size: 24px;
+}
+
+/* Verbal puzzle specific styles */
+.brain-puzzle-verbal-question {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Game over stats display */
+.brain-puzzle-game-over-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.brain-puzzle-game-over-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.brain-puzzle-game-over-stat-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.brain-puzzle-game-over-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+/* Hint area */
+.brain-puzzle-hint {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f0fdf4;
+  border-left: 4px solid #10b981;
+  color: #065f46;
+  font-size: 14px;
+}
+
+/* Progress indicator */
+.brain-puzzle-progress {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.brain-puzzle-progress-step {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  margin: 0 5px;
+}
+
+.brain-puzzle-progress-step.active {
+  background-color: #4f46e5;
+}
+
+.brain-puzzle-progress-step.completed {
+  background-color: #10b981;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.brain-puzzle-option {
+  animation: fadeIn 0.3s ease;
+}
+
+.brain-puzzle-problem {
+  animation: slideIn 0.4s ease;
+}
+
+/* Feedback animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.brain-puzzle-feedback {
+  animation: pulse 0.5s ease;
+}
+
+/* Correct answer celebration */
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1) rotate(5deg); }
+  50% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1); }
+}
+
+.brain-puzzle-celebrate {
+  animation: celebrate 0.7s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .brain-puzzle-difficulty-selector {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .brain-puzzle-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .brain-puzzle-intro, 
+  .brain-puzzle-game-over,
+  .brain-puzzle-paused {
+    padding: 20px;
+  }
+  
+  .brain-puzzle-problem {
+    padding: 15px;
+  }
+  
+  .brain-puzzle-visual-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 250px;
+  }
+  
+  .brain-puzzle-visual-item {
+    width: 75px;
+    height: 75px;
+    font-size: 28px;
+  }
+  
+  .brain-puzzle-game-over-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .brain-puzzle-intro,
+  .brain-puzzle-game-over,
+  .brain-puzzle-paused,
+  .brain-puzzle-content {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+  
+  .brain-puzzle-intro-title,
+  .brain-puzzle-game-over-title,
+  .brain-puzzle-paused-title,
+  .brain-puzzle-title,
+  .brain-puzzle-stat-value {
+    color: #f9fafb;
+  }
+  
+  .brain-puzzle-intro-text,
+  .brain-puzzle-game-over-text,
+  .brain-puzzle-paused-text {
+    color: #d1d5db;
+  }
+  
+  .brain-puzzle-difficulty-button {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+  
+  .brain-puzzle-difficulty-button:hover {
+    background-color: #4b5563;
+  }
+  
+  .brain-puzzle-difficulty-button.selected {
+    border-color: #6366f1;
+    color: #a5b4fc;
+  }
+  
+  .brain-puzzle-problem {
+    background-color: #2d3748;
+  }
+  
+  .brain-puzzle-problem-title {
+    color: #818cf8;
+  }
+  
+  .brain-puzzle-problem-type {
+    background-color: #3730a3;
+    color: #c7d2fe;
+  }
+  
+  .brain-puzzle-option {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+  
+  .brain-puzzle-option:hover {
+    background-color: #4b5563;
+    border-color: #818cf8;
+  }
+  
+  .brain-puzzle-option.selected {
+    border-color: #6366f1;
+    background-color: #4338ca;
+  }
+  
+  .brain-puzzle-option.correct {
+    border-color: #10b981;
+    background-color: #065f46;
+  }
+  
+  .brain-puzzle-option.incorrect {
+    border-color: #ef4444;
+    background-color: #7f1d1d;
+  }
+  
+  .brain-puzzle-explanation {
+    background-color: #78350f;
+    border-left-color: #d97706;
+    color: #fbbf24;
+  }
+  
+  .brain-puzzle-pattern-item {
+    background-color: #4b5563;
+    color: #e5e7eb;
+  }
+  
+  .brain-puzzle-pattern-question {
+    background-color: #3730a3;
+    border-color: #6366f1;
+  }
+  
+  .brain-puzzle-visual-item {
+    background-color: #4b5563;
+    color: #e5e7eb;
+  }
+  
+  .brain-puzzle-game-over-stat {
+    background-color: #2d3748;
+  }
+  
+  .brain-puzzle-game-over-stat-value {
+    color: #818cf8;
+  }
+  
+  .brain-puzzle-hint {
+    background-color: #064e3b;
+    border-left-color: #10b981;
+    color: #a7f3d0;
+  }
+  
+  .brain-puzzle-progress-step {
+    background-color: #4b5563;
+  }
+}
+
+/* Button row */
+.brain-puzzle-buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+} 

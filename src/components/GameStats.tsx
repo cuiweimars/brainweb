@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { totalGames } from '../data/mockData';
+import i18n from '../i18n/i18n';
 
 interface StatItem {
   icon: string;
@@ -9,12 +11,18 @@ interface StatItem {
 
 const GameStats: React.FC = () => {
   const { t } = useTranslation();
+  
+  // 获取系统实际支持的语言数量
+  const supportedLanguages = i18n.options.supportedLngs || [];
+  const languageCount = Array.isArray(supportedLanguages) 
+    ? supportedLanguages.filter((lng: string) => lng !== 'cimode').length 
+    : 5; // 默认值
 
   const stats: StatItem[] = [
     {
       icon: '🎮',
       label: t('totalGames'),
-      value: '4,500+',
+      value: totalGames,
     },
     {
       icon: '👥',
@@ -29,7 +37,7 @@ const GameStats: React.FC = () => {
     {
       icon: '🌍',
       label: t('languages'),
-      value: '20+',
+      value: languageCount,
     },
   ];
 

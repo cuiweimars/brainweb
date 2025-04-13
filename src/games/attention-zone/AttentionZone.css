@@ -1,0 +1,611 @@
+.attention-zone-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 15px;
+  font-size: 0.95rem;
+}
+
+.attention-zone-game {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+
+/* 游戏状态样式 */
+.attention-zone-intro,
+.attention-zone-game-over {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.attention-zone-intro-title,
+.attention-zone-game-over-title {
+  font-size: 2rem;
+  color: #4f46e5;
+  margin-bottom: 15px;
+}
+
+.attention-zone-intro-image,
+.attention-zone-game-over-image {
+  margin: 15px auto;
+  max-width: 160px;
+}
+
+.attention-zone-intro-text,
+.attention-zone-game-over-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.attention-zone-difficulty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.attention-zone-difficulty-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.attention-zone-difficulty-button:hover {
+  background-color: #e5e7eb;
+}
+
+.attention-zone-difficulty-button.selected {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.attention-zone-button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.attention-zone-button-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.attention-zone-button-primary:hover {
+  background-color: #4338ca;
+}
+
+.attention-zone-button-secondary {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.attention-zone-button-secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.attention-zone-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 游戏区域样式 */
+.attention-zone-gameplay {
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.attention-zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.attention-zone-title {
+  font-size: 1.3rem;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.attention-zone-info {
+  display: flex;
+  gap: 20px;
+}
+
+.attention-zone-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.attention-zone-stat-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.attention-zone-stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.attention-zone-content {
+  padding: 15px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+}
+
+.attention-zone-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.attention-zone-left-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.attention-zone-difficulty-info {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.attention-zone-difficulty-value {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+/* 游戏网格样式 */
+.attention-zone-grid {
+  display: grid;
+  gap: 8px;
+  margin: 0 auto;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.attention-zone-grid-3 {
+  max-width: 350px;
+}
+
+.attention-zone-grid-4 {
+  max-width: 420px;
+}
+
+.attention-zone-grid-5 {
+  max-width: 480px;
+}
+
+.attention-zone-cell {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: transparent;
+}
+
+.attention-zone-cell:hover {
+  background-color: #e5e7eb;
+}
+
+.attention-zone-cell.highlighted {
+  background-color: #4f46e5;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  border: 2px solid #fff;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    background-color: #4f46e5;
+    box-shadow: 0 0 6px rgba(79, 70, 229, 0.8);
+  }
+  to {
+    background-color: #8680ed;
+    box-shadow: 0 0 12px rgba(79, 70, 229, 1);
+  }
+}
+
+.attention-zone-cell.selected {
+  background-color: #10b981;
+  transform: scale(1.05);
+}
+
+.attention-zone-cell.wrong {
+  background-color: #ef4444;
+}
+
+.attention-zone-cell.correct {
+  background-color: #10b981;
+}
+
+.attention-zone-cell.missed {
+  background-color: #f59e0b;
+}
+
+/* 游戏状态指示器 */
+.attention-zone-phase-indicator {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background-color: #f3f4f6;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.attention-zone-phase-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.attention-zone-phase-timer {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ef4444;
+  background-color: #fee2e2;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.attention-zone-status {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.attention-zone-status.memorize {
+  color: #4f46e5;
+}
+
+.attention-zone-status.recall {
+  color: #10b981;
+}
+
+.attention-zone-status.waiting {
+  color: #f59e0b;
+}
+
+/* 游戏结束样式 */
+.attention-zone-game-over-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 15px 0;
+  max-width: 450px;
+  margin: 15px auto;
+}
+
+.attention-zone-game-over-stat {
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.attention-zone-game-over-stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.attention-zone-game-over-stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+/* 模态窗口样式 */
+.attention-zone-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+.attention-zone-modal-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.attention-zone-modal-title {
+  font-size: 1.8rem;
+  color: #4f46e5;
+  margin-bottom: 15px;
+}
+
+.attention-zone-modal-text {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #4b5563;
+}
+
+.attention-zone-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 游戏说明样式 */
+.attention-zone-instructions {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.attention-zone-instruction-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.attention-zone-instruction-list {
+  padding-left: 25px;
+}
+
+.attention-zone-instruction-item {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.attention-zone-instruction-highlight {
+  background-color: #eef2ff;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #4f46e5;
+  margin: 0 2px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .attention-zone-container {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .attention-zone-grid-3 {
+    max-width: 300px;
+  }
+  
+  .attention-zone-grid-4 {
+    max-width: 360px;
+  }
+  
+  .attention-zone-grid-5 {
+    max-width: 400px;
+  }
+  
+  .attention-zone-cell {
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .attention-zone-difficulty-selector {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .attention-zone-difficulty-button {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .attention-zone-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .attention-zone-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .attention-zone-controls {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .attention-zone-left-controls {
+    justify-content: space-between;
+  }
+  
+  .attention-zone-modal-content {
+    max-width: 400px;
+    padding: 15px;
+  }
+  
+  .attention-zone-game-over-stats {
+    gap: 10px;
+    max-width: 400px;
+  }
+  
+  .attention-zone-game-over-stat {
+    padding: 10px;
+  }
+  
+  .attention-zone-game-over-stat-value {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .attention-zone-container {
+    padding: 5px;
+  }
+  
+  .attention-zone-grid-3 {
+    max-width: 240px;
+  }
+  
+  .attention-zone-grid-4 {
+    max-width: 280px;
+  }
+  
+  .attention-zone-grid-5 {
+    max-width: 320px;
+  }
+  
+  .attention-zone-info {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .attention-zone-grid {
+    gap: 4px;
+  }
+  
+  .attention-zone-intro-title,
+  .attention-zone-game-over-title {
+    font-size: 1.5rem;
+  }
+  
+  .attention-zone-intro-image,
+  .attention-zone-game-over-image {
+    max-width: 120px;
+  }
+  
+  .attention-zone-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .attention-zone-difficulty-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .attention-zone-phase-text {
+    font-size: 1rem;
+  }
+  
+  .attention-zone-phase-timer {
+    font-size: 1.1rem;
+  }
+  
+  .attention-zone-content {
+    padding: 10px;
+  }
+  
+  .attention-zone-title {
+    font-size: 1.2rem;
+  }
+  
+  .attention-zone-instructions {
+    padding: 10px;
+  }
+  
+  .attention-zone-instruction-title {
+    font-size: 1rem;
+  }
+  
+  .attention-zone-instruction-list {
+    padding-left: 20px;
+  }
+  
+  .attention-zone-modal-content {
+    max-width: 320px;
+    padding: 12px;
+  }
+  
+  .attention-zone-game-over-stats {
+    gap: 8px;
+    max-width: 300px;
+  }
+  
+  .attention-zone-game-over-stat {
+    padding: 8px;
+  }
+  
+  .attention-zone-game-over-stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .attention-zone-game-over-stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .attention-zone-modal-buttons {
+    gap: 8px;
+    margin-top: 15px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+} 
