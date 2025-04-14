@@ -14,13 +14,10 @@ export const useDarkMode = () => useContext(DarkModeContext);
 
 export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
-    // 检查本地存储的用户偏好
-    const savedPreference = localStorage.getItem('darkMode');
-    if (savedPreference !== null) {
-      return savedPreference === 'true';
-    }
-    
-    // 默认使用暗色模式
+    // 强制使用暗色模式
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+    localStorage.setItem('darkMode', 'true');
     return true;
   });
 

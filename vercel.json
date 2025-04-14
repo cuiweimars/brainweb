@@ -27,6 +27,10 @@
       "dest": "/manifest.json"
     },
     {
+      "src": "/sitemap/sitemap.xml",
+      "dest": "/sitemap/sitemap.xml"
+    },    
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
